@@ -1,9 +1,9 @@
-import { translateEntryAction } from '../../../actions/translate-entry/translate-entry.action';
+import { translateEntryAction } from '@//actions/translate-entry/translate-entry.action';
 
-interface EntryTranslatedProps {
+interface TranslatedInfoServerProps {
 	input: string;
 }
-export default async function InfoTranslated({ input }: EntryTranslatedProps) {
+export default async function TranslatedInfoServer({ input }: TranslatedInfoServerProps) {
 	const entry = await translateEntryAction(input);
 
 	return (
