@@ -16,4 +16,6 @@ export namespace TranslateEntryInfraTypes {
 	export interface CreateResponse {
 		data: TranslatedEntry;
 	}
+
+	export type TranslateResponse = Omit<TranslatedEntry, 'id'>;
 }

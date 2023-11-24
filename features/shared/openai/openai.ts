@@ -10,17 +10,35 @@ export class OpenAiClient {
 		this.openai = new OpenAI({ apiKey: this.openApiKey });
 	}
 
-	config(prompt: string) {
-		return {
-			messages: [
-				{ role: 'system', content: 'You are an english teacher.' },
-				{
-					role: 'user',
-					content: prompt,
-				},
-			],
-			model: 'gpt-4-1106-preview',
-			response_format: { type: 'json_object' },
-		};
+	async execute<T>(prompt: string) {
+		try {
+			const completion = await this.openai.chat.completions.create({
+				messages: [
+					{ role: 'system', content: this.role },
+					{
+						role: 'user',
+						content: prompt,
+					},
+				],
+				model: this.model,
+				response_format: { type: 'json_object' },
+			});
+
+			const content = completion.choices[0].message.content;
+
+			if (content && typeof content === 'string') {
+				const { data } = JSON.parse(content);
+
+				if (!data) {
+					throw new Error('OpenAi request response is empty');
+				}
+
+				return data as T;
+			}
+
+			throw new Error('OpenAi request has failed');
+		} catch (error: any) {
+			throw new Error(error);
+		}
 	}
 }

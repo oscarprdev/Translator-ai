@@ -5,7 +5,7 @@ import { OpenAiClient } from '../../shared/openai/openai';
 export interface TranslateEntryInfra {
 	describe(input: TranslateEntryInfraTypes.DescribeInput): Promise<TranslateEntryInfraTypes.DescribeResponse>;
 	create(input: TranslateEntryInfraTypes.CreateInput): Promise<TranslateEntryInfraTypes.CreateResponse>;
-	translate<T>(prompt: string): Promise<T>;
+	translate(prompt: string): Promise<TranslateEntryInfraTypes.TranslateResponse>;
 }
 
 export class DefaultTranslateEntryInfra implements TranslateEntryInfra {
@@ -13,7 +13,7 @@ export class DefaultTranslateEntryInfra implements TranslateEntryInfra {
 
 	async describe({ original }: TranslateEntryInfraTypes.DescribeInput): Promise<TranslateEntryInfraTypes.DescribeResponse> {
 		try {
-			const response = await this.db.translatedEntry.findFirst({
+			const response = await this.db.translatedEntry.findUnique({
 				where: {
 					original,
 				},
@@ -30,50 +30,18 @@ export class DefaultTranslateEntryInfra implements TranslateEntryInfra {
 	async create({ data }: TranslateEntryInfraTypes.CreateInput): Promise<TranslateEntryInfraTypes.CreateResponse> {
 		try {
 			const response = await this.db.translatedEntry.create({
-				data: {
-					...data,
-					example: data.example,
-				},
+				data,
 			});
 
 			return {
 				data: response,
 			};
-		} catch (error) {
-			console.log(error);
+		} catch (error: unknown) {
 			throw new Error(JSON.stringify(error));
 		}
 	}
 
-	async translate<T>(prompt: string): Promise<T> {
-		try {
-			const completion = await this.openaiClient.openai.chat.completions.create({
-				messages: [
-					{ role: 'system', content: this.openaiClient.role },
-					{
-						role: 'user',
-						content: prompt,
-					},
-				],
-				model: this.openaiClient.model,
-				response_format: { type: 'json_object' },
-			});
-
-			const content = completion.choices[0].message.content;
-
-			if (content && typeof content === 'string') {
-				const { data } = JSON.parse(content);
-
-				if (!data) {
-					throw new Error('OpenAi request response is empty');
-				}
-
-				return data as T;
-			}
-
-			throw new Error('OpenAi request has failed');
-		} catch (error: any) {
-			throw new Error(error);
-		}
+	async translate(prompt: string): Promise<TranslateEntryInfraTypes.TranslateResponse> {
+		return await this.openaiClient.execute<TranslateEntryInfraTypes.TranslateResponse>(prompt);
 	}
 }

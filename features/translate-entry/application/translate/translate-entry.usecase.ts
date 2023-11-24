@@ -22,7 +22,7 @@ export class DefaultTranslateEntryUsecase implements TranslateEntryUsecase {
 			const prompt = `Translate me the input: ${input} from ${languageInput} to ${languageOutput}, 
             determine if the input is a word, a phrasal verb or an idiom,
             the output must has a data object in JSON following the pattern:
-            data: {
+           		data: {
                     kind: 'word' | 'phrasal verb' | 'idiom' // determine which one fits better with the input received, must be only one of this
                     original: // input to translate.
                     translated: // input translated to ${languageOutput}.
@@ -30,7 +30,7 @@ export class DefaultTranslateEntryUsecase implements TranslateEntryUsecase {
                     antonyms: // string[] // antonyms of original input in ${languageInput}, if it is a phrasal verb or an idiom, provide similar phrasal verbs or idioms with opposite meaning.
                     definition: // Short definition of original input, no more than 100 words in ${languageInput}.
                     example: // string[] // At least 3 sentences using the original input in ${languageInput}.
-                    hint: string // Provide a hint in ${languageInput} explaining in which situation should be used, no more than 50 words.
+                    hint: string // Provide a hint in ${languageInput} explaining in which situation should be used, no more than 50 words, the hint must start with the patter: "Use "word" to/when/for ...".
                   }
             `;
 

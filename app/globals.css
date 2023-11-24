@@ -2,10 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--app-width: 45vw;
+}
+
 @keyframes slide-up {
 	0% {
 		transform: translateY(100%);
-		display: block;
 	}
 	15% {
 		transform: translateY(0);
@@ -22,5 +25,5 @@
 }
 
 .animate-slide-up {
-	animation: slide-up ease-out 2s forwards;
+	animation: slide-up ease-out 5s forwards;
 }

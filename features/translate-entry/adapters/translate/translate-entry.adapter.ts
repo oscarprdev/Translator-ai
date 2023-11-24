@@ -17,7 +17,7 @@ export class TranslateEntryAdapter implements TranslateEntryPorts {
 
 	async translate({ prompt }: TranslateEntryPorts.TranslateInput): Promise<TranslateEntryPorts.TranslateEntryOutput> {
 		const validInput = this.validateInput(prompt);
-		const response = await this.infra.translate<Omit<TranslatedEntry, 'id'>>(validInput);
+		const response = await this.infra.translate(validInput);
 
 		return {
 			data: this.validateOutput(response),

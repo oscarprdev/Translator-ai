@@ -1,14 +1,14 @@
-import { TranslatedEntry } from '@prisma/client';
 import { UsecaseOutputState } from '../../../shared/types/usecase-output-state';
+import { TranslatedInput } from '../common/types';
 
-export namespace DescribeTranslatedEntryTypes {
+export namespace DescribeTranslatedInputTypes {
 	export interface DescribeInput {
 		original: string;
 	}
 
 	export interface SuccessDescribeOutput {
 		state: UsecaseOutputState.success;
-		data: TranslatedEntry | null;
+		data: TranslatedInput | null;
 	}
 
 	export interface ErrorDescribeOutput {

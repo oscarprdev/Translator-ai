@@ -8,7 +8,7 @@ import { DefaultStoreTranslatedEntryUsecase } from './application/store/store-tr
 import { DefaultDescribeTranslatedEntryUsecase } from './application/describe/describe-translated-entry.usecase';
 import { DefaultTranslateEntryUsecase } from './application/translate/translate-entry.usecase';
 import { DefaultTranslateEntryInfra } from './infra/translate-entry.infra';
-import { DefaultHandleTranslateEntryUsecase } from './application/handle/handle-translate-entry';
+import { DefaultHandleTranslateEntryUsecase } from './application/handle/handle-translate-entry.usecase';
 
 const clientAi = new OpenAiClient();
 const client = new DefaultTranslateEntryInfra(db, clientAi);
