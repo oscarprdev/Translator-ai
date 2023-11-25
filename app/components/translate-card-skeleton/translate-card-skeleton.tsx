@@ -1,14 +1,11 @@
-interface TranslateCardSkeletonProps {
-	loading?: boolean;
-}
-
-export default function TranslateCardSkeleton({ loading }: TranslateCardSkeletonProps) {
+export default function TranslateCardSkeleton() {
 	return (
-		<div className='w-full h-full'>
-			<textarea
-				value={loading ? 'Loading...' : ''}
-				className='h-full p-2 outline-none resize-none w-full overflow-hidden border border-zinc-200'
-			/>
+		<div className='animate-pulse relative grid place-items-center py-5 w-[60%] h-14 bg-[var(--bg-translated-card)] '>
+			<div className='flex items-center space-x-1'>
+				<div className='bg-zinc-200 w-1 h-1 rounded-full animate-pulse-delay-100'></div>
+				<div className='bg-zinc-200 w-1 h-1 rounded-full animate-pulse-delay-500'></div>
+				<div className='bg-zinc-200 w-1 h-1 rounded-full animate-pulse-delay-1000'></div>
+			</div>
 		</div>
 	);
 }

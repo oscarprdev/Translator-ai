@@ -3,7 +3,7 @@
 import { ChangeEvent, useState } from 'react';
 import LanguageSelector from '../language-selector/language-selector';
 import { LanguagesParams } from '../language-selector/language-selector.types';
-import TextareaInput from '../textarea-input/textarea-input';
+import TranslateCardInput from '../translate-card-input/translate-card-input';
 
 const DEFAULT_LANG_PARAMS: LanguagesParams = {
 	langInput: 'English',
@@ -22,12 +22,12 @@ export default function TranslateCardClient() {
 	};
 
 	return (
-		<>
+		<div className='flex flex-col gap-10 w-full p-10'>
 			<LanguageSelector
 				languages={languages}
 				handleSelect={handleSelect}
 			/>
-			<TextareaInput languages={languages} />
-		</>
+			<TranslateCardInput languages={languages} />
+		</div>
 	);
 }

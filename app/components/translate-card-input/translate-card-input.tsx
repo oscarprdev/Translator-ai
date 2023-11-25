@@ -3,29 +3,27 @@ import { ChangeEvent } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { LanguagesParams } from '../language-selector/language-selector.types';
 
-interface TextareaInputProps {
+interface TranslateCardInputProps {
 	languages: LanguagesParams;
 }
 
-const DEBOUNCE_TIMEOUT = 1000;
+const DEBOUNCE_TIMEOUT = 500;
 
-export default function TextareaInput({ languages }: TextareaInputProps) {
+export default function TranslateCardInput({ languages }: TranslateCardInputProps) {
 	const pathname = usePathname();
 	const { replace } = useRouter();
 
-	const handleTextarea = useDebouncedCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInput = useDebouncedCallback((e: ChangeEvent<HTMLInputElement>) => {
 		const input = e.target.value;
 
 		replace(`${pathname}?input=${input}&langInput=${languages.langInput}&langOutput=${languages.langOutput}`);
 	}, DEBOUNCE_TIMEOUT);
 
 	return (
-		<div className='w-full h-full'>
-			<textarea
-				className='h-full p-2 outline-none resize-none w-full overflow-hidden border border-zinc-200'
-				placeholder='Enter your input'
-				onChange={handleTextarea}
-			/>
-		</div>
+		<input
+			className='p-2 outline-none resize-none w-full overflow-hidden border-b capitalize border-zinc-200'
+			placeholder='Enter a word, phrasal verb or an idiom to be translated'
+			onChange={handleInput}
+		/>
 	);
 }

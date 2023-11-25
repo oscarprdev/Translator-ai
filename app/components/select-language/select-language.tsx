@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { LangParams } from '../language-selector/language-selector.types';
 
-const languagesAvailables = ['english', 'spanish'];
+const languagesAvailables = ['English', 'Spanish'];
 
 interface SelectLanguageProps {
 	name: LangParams.input | LangParams.output;
@@ -18,8 +18,7 @@ export default function SelectLanguage({ name, selected, handleSelectLanguages }
 				<option
 					key={crypto.randomUUID().toString()}
 					value={lang}
-					selected={lang === selected}
-					className='capitalize'>
+					selected={lang === selected}>
 					{lang}
 				</option>
 			))}

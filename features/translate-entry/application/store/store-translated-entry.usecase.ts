@@ -18,15 +18,11 @@ export class DefaultStoreTranslatedEntryUsecase implements StoreTranslatedEntryU
 	> {
 		try {
 			const response = await this.ports.storeTranslatedEntry({ data });
-
-			console.log(response);
-
 			return {
 				data: response.data,
 				state: UsecaseOutputState.success,
 			};
 		} catch (error: any) {
-			console.log(error);
 			return {
 				error: error.message || 'Unexpected error creating new dictionary entry',
 				state: UsecaseOutputState.error,

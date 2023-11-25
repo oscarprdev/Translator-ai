@@ -3,7 +3,20 @@
 @tailwind utilities;
 
 :root {
-	--app-width: 45vw;
+	--app-width: 40vw;
+
+	--bg-translated-section: #28293b;
+
+	--contrast-color: #6686e1;
+	--bg-translated-card: #2c3042;
+
+	--contrast-color-pulse: #475e9d;
+	--bg-translated-card-pulse: #404660;
+}
+
+body {
+	display: grid;
+	place-items: center;
 }
 
 @keyframes slide-up {

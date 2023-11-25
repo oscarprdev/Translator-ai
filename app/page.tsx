@@ -11,9 +11,9 @@ interface HomePageProps {
 
 export default async function HomePage({ searchParams }: HomePageProps) {
 	return (
-		<main className='flex flex-col items-center w-screen h-full'>
+		<main className='flex flex-col items-center h-screen w-[var(--app-width)] border-l border-r border-zinc-100'>
 			<TranslateCard input={searchParams.input} />
-			<TranslatedInfo input={searchParams.input} />
+			{/* <TranslatedInfo input={searchParams.input} /> */}
 			{searchParams?.error && <ToastError message={searchParams.error} />}
 		</main>
 	);
