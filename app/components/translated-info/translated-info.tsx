@@ -2,17 +2,23 @@ import { Suspense } from 'react';
 import TranslatedInfoServer from '../translated-info-server/translated-info-server';
 import TranslatedInfoSkeleton from '../translated-info-skeleton/translated-info-skeleton';
 
-export default function TranslatedInfo({ input }: { input?: string }) {
+interface TranslatedInfoProps {
+	input?: string;
+	info: string;
+}
+
+export default function TranslatedInfo({ input, info }: TranslatedInfoProps) {
 	return (
-		<section className='flex flex-col w-[var(--app-width)]'>
+		<section className='flex flex-col w-full h-full bg-[var(--bg-translated-section)]'>
 			{input && (
-				<div>
-					<Suspense
-						key={crypto.randomUUID.toString()}
-						fallback={<TranslatedInfoSkeleton />}>
-						<TranslatedInfoServer input={input} />
-					</Suspense>
-				</div>
+				<Suspense
+					key={input}
+					fallback={<TranslatedInfoSkeleton />}>
+					<TranslatedInfoServer
+						input={input}
+						info={info}
+					/>
+				</Suspense>
 			)}
 		</section>
 	);

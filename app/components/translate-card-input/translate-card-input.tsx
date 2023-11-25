@@ -16,7 +16,7 @@ export default function TranslateCardInput({ languages }: TranslateCardInputProp
 	const handleInput = useDebouncedCallback((e: ChangeEvent<HTMLInputElement>) => {
 		const input = e.target.value;
 
-		replace(`${pathname}?input=${input}&langInput=${languages.langInput}&langOutput=${languages.langOutput}`);
+		replace(`${pathname}?input=${input}&langInput=${languages.langInput}&langOutput=${languages.langOutput}&info=det`);
 	}, DEBOUNCE_TIMEOUT);
 
 	return (

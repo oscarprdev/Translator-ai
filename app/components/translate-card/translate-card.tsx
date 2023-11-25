@@ -12,7 +12,7 @@ const TranslateCardServerController = ({ input }: TranslateCardProps) => {
 		<section className='grid place-items-center w-full h-[20vh] bg-[var(--bg-translated-section)]'>
 			{input && (
 				<Suspense
-					key={crypto.randomUUID().toString()}
+					key={input}
 					fallback={<TranslateCardSkeleton />}>
 					<TranslateCardServer input={input} />
 				</Suspense>
