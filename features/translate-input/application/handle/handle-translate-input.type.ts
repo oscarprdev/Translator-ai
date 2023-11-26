@@ -4,4 +4,9 @@ export namespace HandleTranslatedInputTypes {
 		languageInput: string;
 		languageOutput: string;
 	}
+
+	export interface HandleTranslateOutput {
+		original: string;
+		translated: string;
+	}
 }

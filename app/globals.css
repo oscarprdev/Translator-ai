@@ -8,14 +8,12 @@
 	--bg-translated-section: #28293b;
 
 	--contrast-color: #6686e1;
+	--contrast-color-hover: #7994de;
+
 	--bg-translated-card: #2c3042;
 
 	--contrast-color-pulse: #475e9d;
 	--bg-translated-card-pulse: #404660;
-
-	--contrast-color-alt-1: #e16686;
-	--contrast-color-alt-2: #66e182;
-	--contrast-color-alt-3: #e1c166;
 }
 
 body {

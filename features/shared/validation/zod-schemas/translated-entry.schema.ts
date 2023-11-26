@@ -1,17 +1,14 @@
 import { z } from 'zod';
+import { TranslationSchema } from './translations.schema';
 
 export const TranslatedEntrySchema = {
 	kind: z.string({
 		required_error: 'kind field is required',
 		invalid_type_error: 'kind value must be a string',
 	}),
-	original: z.string({
-		required_error: 'original field is required',
-		invalid_type_error: 'original value must be a string',
-	}),
-	translated: z.string({
-		required_error: 'translated field is required',
-		invalid_type_error: 'translated value must be a string',
+	word: z.string({
+		required_error: 'word field is required',
+		invalid_type_error: 'word value must be a string',
 	}),
 	synonyms: z.array(
 		z.string({
@@ -29,14 +26,15 @@ export const TranslatedEntrySchema = {
 		required_error: 'definition field is required',
 		invalid_type_error: 'definition value must be a string',
 	}),
-	hint: z.string({
-		required_error: 'hint field is required',
-		invalid_type_error: 'hint values must be a string',
+	uses: z.string({
+		required_error: 'uses field is required',
+		invalid_type_error: 'uses values must be a string',
 	}),
-	example: z.array(
+	examples: z.array(
 		z.string({
 			required_error: 'examples field is required',
 			invalid_type_error: 'examples values must be a string',
 		})
 	),
+	translations: z.array(TranslationSchema),
 };

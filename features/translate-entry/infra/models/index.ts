@@ -1,12 +1,17 @@
-import { TranslatedEntry } from '@prisma/client';
+import { TranslatedEntry, Translations } from '@prisma/client';
 
 export namespace TranslateEntryInfraTypes {
 	export interface DescribeInput {
-		original: string;
+		word: string;
+		langInput: string;
+		langOutput: string;
 	}
 
 	export interface DescribeResponse {
-		data: TranslatedEntry | null;
+		data: {
+			inputResponse: TranslatedEntry | null;
+			outputResponse: TranslatedEntry | null;
+		};
 	}
 
 	export interface CreateInput {

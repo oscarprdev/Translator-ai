@@ -52,8 +52,11 @@ export class DefaultHandleTranslateInputUsecase implements HandleTranslateInputU
 	}: HandleTranslatedInputTypes.HandleTranslateInput): Promise<TranslatedInput> {
 		const describeUsecaseResponse = await this.findStoredInput(input);
 
-		if (describeUsecaseResponse) {
-			return describeUsecaseResponse;
+		if (describeUsecaseResponse?.original && describeUsecaseResponse?.translated) {
+			return {
+				original: describeUsecaseResponse.original,
+				translated: describeUsecaseResponse.translated,
+			};
 		}
 
 		const response = await this.translateInput(input, languageInput, languageOutput);

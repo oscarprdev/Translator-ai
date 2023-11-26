@@ -61,11 +61,14 @@ export class DefaultHandleTranslateEntryUsecase implements HandleTranslateEntryU
 		input,
 		languageInput,
 		languageOutput,
-	}: HandleTranslatedEntryTypes.HandleTranslateInput): Promise<TranslatedEntry> {
+	}: HandleTranslatedEntryTypes.HandleTranslateInput): Promise<HandleTranslatedEntryTypes.HandleTranslateOutput> {
 		const describeUsecaseResponse = await this.findStoredEntry(input);
 
-		if (describeUsecaseResponse) {
-			return describeUsecaseResponse;
+		if (describeUsecaseResponse?.inputResponse && describeUsecaseResponse?.outputResponse) {
+			return {
+				entryInput: describeUsecaseResponse.inputResponse,
+				entryOutput: describeUsecaseResponse.outputResponse,
+			};
 		}
 
 		const translatedEntry = await this.translateEntry(input, languageInput, languageOutput);

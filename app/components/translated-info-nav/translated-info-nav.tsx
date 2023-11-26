@@ -18,14 +18,14 @@ export default function TransalatedInfoNav() {
 			<NavLink
 				pathname={pathname}
 				params={params}
-				targetInfo='onyms'
-				label='Synonyms & Antonyms'
+				targetInfo='syn'
+				label='Synonyms'
 			/>
 			<NavLink
 				pathname={pathname}
 				params={params}
-				targetInfo='alt'
-				label='Alternatives'
+				targetInfo='ant'
+				label=' Antonyms'
 			/>
 		</nav>
 	);

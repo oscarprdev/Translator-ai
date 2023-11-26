@@ -3,21 +3,40 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") 
-  directUrl = env("POSTGRES_URL_NON_POOLING") 
+  provider     = "postgresql"
+  url          = env("POSTGRES_PRISMA_URL")
+  directUrl    = env("POSTGRES_URL_NON_POOLING")
   relationMode = "prisma"
 }
 
 model TranslatedEntry {
-  id  String  @default(uuid()) @id
+  id           String         @id @default(uuid())
+  kind         String
+  word         String         @unique
+  synonyms     String[]
+  antonyms     String[]
+  examples     String[]
+  definition   String
+  uses         String
+  translations Translations[]
+  dictionaries Dictionary[]
+}
 
-  kind  String
-  original  String @unique
-  translated  String @unique
-  synonyms  String[]
-  antonyms  String[]
-  example   String[]
-  definition  String
-  hint  String
+model Translations {
+  id String @id @default(uuid())
+
+  language    String
+  translation String
+  entryId     String
+  entry       TranslatedEntry @relation(fields: [entryId], references: [id])
+
+  @@index([entryId], name: "id_entryId")
+}
+
+model Dictionary {
+  id       String            @id @default(uuid())
+  language String            @unique
+  entries  TranslatedEntry[]
+
+  @@index([language], name: "id_language")
 }

@@ -9,9 +9,11 @@ import { DefaultDescribeTranslatedEntryUsecase } from './application/describe/de
 import { DefaultTranslateEntryUsecase } from './application/translate/translate-entry.usecase';
 import { DefaultTranslateEntryInfra } from './infra/translate-entry.infra';
 import { DefaultHandleTranslateEntryUsecase } from './application/handle/handle-translate-entry.usecase';
+import { DefaultDescribeEntryInfra } from '../shared/infra/describe-entry.infra';
 
 const clientAi = new OpenAiClient();
-const client = new DefaultTranslateEntryInfra(db, clientAi);
+const describeTranslatedInfra = new DefaultDescribeEntryInfra(db);
+const client = new DefaultTranslateEntryInfra(db, clientAi, describeTranslatedInfra);
 const validation = new DefaultZodValidation();
 
 const describeAdapter = new DescribeTranslatedEntryAdapter(client, validation);

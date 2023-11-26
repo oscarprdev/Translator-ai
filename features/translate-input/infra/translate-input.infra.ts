@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { TranslateInputInfraTypes } from './models/index';
 import { OpenAiClient } from '../../shared/openai/openai';
+import { DescribeEntryInfra } from '../../shared/infra/describe-entry.infra';
 
 export interface TranslateInputInfra {
 	describe(input: TranslateInputInfraTypes.DescribeInput): Promise<TranslateInputInfraTypes.DescribeResponse>;
@@ -8,22 +9,28 @@ export interface TranslateInputInfra {
 }
 
 export class DefaultTranslateInputInfra implements TranslateInputInfra {
-	constructor(private readonly db: PrismaClient, private readonly openaiClient: OpenAiClient) {}
+	constructor(
+		private readonly db: PrismaClient,
+		private readonly openaiClient: OpenAiClient,
+		private readonly describeEntryInfra: DescribeEntryInfra
+	) {}
 
-	async describe({ original }: TranslateInputInfraTypes.DescribeInput): Promise<TranslateInputInfraTypes.DescribeResponse> {
+	async describe({
+		word,
+		langInput,
+		langOutput,
+	}: TranslateInputInfraTypes.DescribeInput): Promise<TranslateInputInfraTypes.DescribeResponse> {
 		try {
-			const response = await this.db.translatedEntry.findUnique({
-				where: {
-					original,
-				},
-				select: {
-					original: true,
-					translated: true,
-				},
-			});
+			const { entry, translations } = await this.describeEntryInfra.findWordFromDictionary({ word, lang: langInput });
+
+			console.log(translations);
+			const wordTranslated = translations?.find((trans) => trans.language === langOutput);
+
+			console.log(wordTranslated);
 
 			return {
-				data: response,
+				original: entry?.word ?? null,
+				translated: wordTranslated?.translation ?? null,
 			};
 		} catch (error: unknown) {
 			throw new Error(JSON.stringify(error));

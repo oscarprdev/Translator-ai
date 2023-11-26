@@ -8,7 +8,10 @@ export namespace DescribeTranslatedInputTypes {
 
 	export interface SuccessDescribeOutput {
 		state: UsecaseOutputState.success;
-		data: TranslatedInput | null;
+		data: {
+			original: string | null;
+			translated: string | null;
+		};
 	}
 
 	export interface ErrorDescribeOutput {

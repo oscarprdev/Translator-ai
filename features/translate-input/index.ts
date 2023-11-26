@@ -1,4 +1,5 @@
 import { db } from '../../lib/db';
+import { DefaultDescribeEntryInfra } from '../shared/infra/describe-entry.infra';
 import { OpenAiClient } from '../shared/openai/openai';
 import { DefaultZodValidation } from '../shared/validation/zod-validation';
 import { DescribeTranslatedInputAdapter } from './adapters/describe-input/describe-input.adapter';
@@ -9,7 +10,9 @@ import { DefaultTranslateInputUsecase } from './application/translate/translate-
 import { DefaultTranslateInputInfra } from './infra/translate-input.infra';
 
 const clientAi = new OpenAiClient();
-const client = new DefaultTranslateInputInfra(db, clientAi);
+const describeTranslatedInfra = new DefaultDescribeEntryInfra(db);
+
+const client = new DefaultTranslateInputInfra(db, clientAi, describeTranslatedInfra);
 const validation = new DefaultZodValidation();
 
 const describeInputAdapter = new DescribeTranslatedInputAdapter(client, validation);

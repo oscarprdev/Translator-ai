@@ -10,19 +10,26 @@ import { TranslateEntryInfra } from '../../infra/translate-entry.infra';
 export class DescribeTranslatedEntryAdapter implements DescribeTranslatedEntryPorts {
 	constructor(private readonly infra: TranslateEntryInfra, private readonly zod: ZodValidation) {}
 
-	private validateInput(input: string) {
-		return this.zod.validate<string>(DescribeTranslatedEntryInputSchema, input);
+	private validateInput(input: DescribeTranslatedEntryPorts.DescribePostInput) {
+		return this.zod.validate<DescribeTranslatedEntryPorts.DescribePostInput>(DescribeTranslatedEntryInputSchema, input);
 	}
 
 	private validateOutput(input: TranslatedEntry) {
 		return this.zod.validate<TranslatedEntry>(DescribeTranslatedEntryResponseSchema, input);
 	}
 
-	async describe({ original }: DescribeTranslatedEntryPorts.DescribePostInput): Promise<DescribeTranslatedEntryPorts.DescribePostOutput> {
-		const response = await this.infra.describe({ original: this.validateInput(original) });
+	async describe(input: DescribeTranslatedEntryPorts.DescribePostInput): Promise<DescribeTranslatedEntryPorts.DescribePostOutput> {
+		const { original, langInput, langOutput } = this.validateInput(input);
+
+		const {
+			data: { inputResponse, outputResponse },
+		} = await this.infra.describe({ word: original, langInput, langOutput });
 
 		return {
-			data: response.data ? this.validateOutput(response.data) : null,
+			data: {
+				inputResponse: inputResponse ? this.validateOutput(inputResponse) : null,
+				outputResponse: outputResponse ? this.validateOutput(outputResponse) : null,
+			},
 		};
 	}
 }

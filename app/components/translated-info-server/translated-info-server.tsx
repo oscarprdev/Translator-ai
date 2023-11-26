@@ -7,27 +7,31 @@ interface TranslatedInfoServerProps {
 	info: string;
 }
 export default async function TranslatedInfoServer({ input, info }: TranslatedInfoServerProps) {
-	const entry = await translateEntryAction(input);
+	const { entryInput, entryOutput } = await translateEntryAction(input);
 
 	return (
 		<section className='flex flex-col gap-10 w-full px-10 pb-10'>
 			<TransalatedInfoNav />
 			{info === 'det' && (
 				<TranslatedInfoDetails
-					definition={entry.definition}
-					example={entry.example}
-					hint={entry.hint}
+					definition={entryInput.definition}
+					definitionTranslated={entryOutput.definition}
+					example={entryInput.examples}
+					exampleTranslated={entryOutput.examples}
+					uses={entryInput.uses}
+					usesTranslated={entryOutput.uses}
 					keyWord={input}
+					keyWordTranslated={entryOutput.word}
 				/>
 			)}
-			{info === 'onyms' && (
+			{info === 'syn' && (
 				<article>
-					<p>{entry.synonyms}</p>
+					<p></p>
 				</article>
 			)}
-			{info === 'alt' && (
+			{info === 'ant' && (
 				<article>
-					<p>{entry.kind}</p>
+					<p></p>
 				</article>
 			)}
 		</section>

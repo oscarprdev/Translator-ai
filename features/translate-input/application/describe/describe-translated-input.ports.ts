@@ -1,4 +1,4 @@
-import { TranslatedInput } from '../common/types';
+import { TranslatedEntry } from '@prisma/client';
 
 export interface DescribeTranslatedInputPorts {
 	describe(input: DescribeTranslatedInputPorts.DescribePostInput): Promise<DescribeTranslatedInputPorts.DescribePostOutput>;
@@ -7,9 +7,12 @@ export interface DescribeTranslatedInputPorts {
 export namespace DescribeTranslatedInputPorts {
 	export interface DescribePostInput {
 		original: string;
+		langInput: string;
+		langOutput: string;
 	}
 
 	export interface DescribePostOutput {
-		data: TranslatedInput | null;
+		original: string | null;
+		translated: string | null;
 	}
 }

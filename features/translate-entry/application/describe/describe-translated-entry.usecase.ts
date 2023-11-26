@@ -17,10 +17,17 @@ export class DefaultDescribeTranslatedEntryUsecase implements DescribeTranslated
 		DescribeTranslatedEntryTypes.SuccessDescribeOutput | DescribeTranslatedEntryTypes.ErrorDescribeOutput
 	> {
 		try {
-			const { data } = await this.ports.describe({ original });
+			const langInput = 'english';
+			const langOutput = 'spanish';
+			const {
+				data: { inputResponse, outputResponse },
+			} = await this.ports.describe({ original, langInput, langOutput });
 
 			return {
-				data,
+				data: {
+					inputResponse,
+					outputResponse,
+				},
 				state: UsecaseOutputState.success,
 			};
 		} catch (error: any) {

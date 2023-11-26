@@ -27,11 +27,16 @@ export class DefaultTranslateEntryUsecase implements TranslateEntryUsecase {
                     original: // input to translate.
                     translated: // input translated to ${languageOutput}.
                     synonyms: // string[] // synonyms of original input in ${languageInput}, if it is a phrasal verb or an idiom, provide similar phrasal verbs or idioms with similar meaning.
-                    antonyms: // string[] // antonyms of original input in ${languageInput}, if it is a phrasal verb or an idiom, provide similar phrasal verbs or idioms with opposite meaning.
-                    definition: // Short definition of original input, no more than 100 words in ${languageInput}.
-                    example: // string[] // At least 3 sentences using the original input in ${languageInput}.
-                    hint: string // Provide a hint in ${languageInput} explaining in which situation should be used, no more than 50 words, the hint must start with the patter: "Use "word" to/when/for ...".
-                  }
+					synonymsTranslated: // string[] // Exactly same information that the 'synonyms' response but translated to ${languageOutput}
+					antonyms: // string[] // antonyms of original input in ${languageInput}, if it is a phrasal verb or an idiom, provide similar phrasal verbs or idioms with opposite meaning.
+					antonymsTranslated: // string[] // Exactly same information that the 'antonyms' response but translated to ${languageOutput}
+					definition: // Short definition of original input, no more than 100 words in ${languageInput}.
+					definitionTranslated: // string[] // Exactly same information that the 'definition' response but translated to ${languageOutput}
+					example: // string[] // At least 3 sentences using the original input in ${languageInput}.
+					exampleTranslated: // string[] // Exactly same information that the 'example' response but translated to ${languageOutput}
+					uses: string // Provide uses explanation in ${languageInput} explaining in which situation should be used, no more than 50 words, the uses response must start with the pattern: "Use "word" to/when/for ...".
+					usesTranslated: // string[] // Exactly same information that the 'uses' response but translated to ${languageOutput}
+				}
             `;
 
 			const { data } = await this.ports.translate({ prompt });

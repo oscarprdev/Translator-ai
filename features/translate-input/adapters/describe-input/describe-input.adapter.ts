@@ -7,19 +7,22 @@ import { TranslatedInput } from '../../application/common/types';
 export class DescribeTranslatedInputAdapter implements DescribeTranslatedInputPorts {
 	constructor(private readonly infra: TranslateInputInfra, private readonly zod: ZodValidation) {}
 
-	private validateInput(input: string) {
-		return this.zod.validate<string>(TranslatedInputSchema, input);
+	private validateInput(input: DescribeTranslatedInputPorts.DescribePostInput) {
+		return this.zod.validate<DescribeTranslatedInputPorts.DescribePostInput>(TranslatedInputSchema, input);
 	}
 
 	private validateOutput(input: TranslatedInput) {
 		return this.zod.validate<TranslatedInput>(TranslatedOutputSchema, input);
 	}
 
-	async describe({ original }: DescribeTranslatedInputPorts.DescribePostInput): Promise<DescribeTranslatedInputPorts.DescribePostOutput> {
-		const response = await this.infra.describe({ original: this.validateInput(original) });
+	async describe(input: DescribeTranslatedInputPorts.DescribePostInput): Promise<DescribeTranslatedInputPorts.DescribePostOutput> {
+		const { original, langInput, langOutput } = this.validateInput(input);
+
+		const response = await this.infra.describe({ word: original, langInput, langOutput });
 
 		return {
-			data: response.data ? this.validateOutput(response.data) : null,
+			original: response.original,
+			translated: response.translated,
 		};
 	}
 }

@@ -1,6 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Dictionary } from '@prisma/client';
 import { TranslateEntryInfraTypes } from './models/index';
 import { OpenAiClient } from '../../shared/openai/openai';
+import { DescribeEntryInfra } from '../../shared/infra/describe-entry.infra';
 
 export interface TranslateEntryInfra {
 	describe(input: TranslateEntryInfraTypes.DescribeInput): Promise<TranslateEntryInfraTypes.DescribeResponse>;
@@ -9,18 +10,40 @@ export interface TranslateEntryInfra {
 }
 
 export class DefaultTranslateEntryInfra implements TranslateEntryInfra {
-	constructor(private readonly db: PrismaClient, private readonly openaiClient: OpenAiClient) {}
+	constructor(
+		private readonly db: PrismaClient,
+		private readonly openaiClient: OpenAiClient,
+		private readonly describeEntryInfra: DescribeEntryInfra
+	) {}
 
-	async describe({ original }: TranslateEntryInfraTypes.DescribeInput): Promise<TranslateEntryInfraTypes.DescribeResponse> {
+	async describe({
+		word,
+		langInput,
+		langOutput,
+	}: TranslateEntryInfraTypes.DescribeInput): Promise<TranslateEntryInfraTypes.DescribeResponse> {
 		try {
-			const response = await this.db.translatedEntry.findUnique({
-				where: {
-					original,
-				},
+			const inputResponse = await this.describeEntryInfra.findWordFromDictionary({ word, lang: langInput });
+			const wordTranslated = inputResponse.translations?.find((trans) => trans.language === langOutput);
+
+			if (!inputResponse.entry || !inputResponse.translations?.length || !wordTranslated) {
+				return {
+					data: {
+						inputResponse: null,
+						outputResponse: null,
+					},
+				};
+			}
+
+			const outputResponse = await this.describeEntryInfra.findWordFromDictionary({
+				word: wordTranslated.translation,
+				lang: langOutput,
 			});
 
 			return {
-				data: response,
+				data: {
+					inputResponse: inputResponse.entry,
+					outputResponse: outputResponse.entry,
+				},
 			};
 		} catch (error: unknown) {
 			throw new Error(JSON.stringify(error));

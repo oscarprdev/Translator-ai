@@ -7,9 +7,14 @@ export interface DescribeTranslatedEntryPorts {
 export namespace DescribeTranslatedEntryPorts {
 	export interface DescribePostInput {
 		original: string;
+		langInput: string;
+		langOutput: string;
 	}
 
 	export interface DescribePostOutput {
-		data: TranslatedEntry | null;
+		data: {
+			inputResponse: TranslatedEntry | null;
+			outputResponse: TranslatedEntry | null;
+		};
 	}
 }
