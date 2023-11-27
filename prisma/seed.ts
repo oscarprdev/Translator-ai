@@ -9,6 +9,7 @@ async function main() {
 			entries: {
 				create: {
 					kind: 'Noun',
+					lang: 'english',
 					word: 'strong',
 					synonyms: ['powerful', 'mighty'],
 					antonyms: ['weak'],
@@ -36,6 +37,7 @@ async function main() {
 			entries: {
 				create: {
 					kind: 'Noun',
+					lang: 'spanish',
 					word: 'fuerte',
 					synonyms: ['poderoso', 'robusto'],
 					antonyms: ['débil'],

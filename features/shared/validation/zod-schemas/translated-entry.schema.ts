@@ -6,22 +6,16 @@ export const TranslatedEntrySchema = {
 		required_error: 'kind field is required',
 		invalid_type_error: 'kind value must be a string',
 	}),
+	lang: z.string({
+		required_error: 'lang field is required',
+		invalid_type_error: 'lang value must be a string',
+	}),
 	word: z.string({
 		required_error: 'word field is required',
 		invalid_type_error: 'word value must be a string',
 	}),
-	synonyms: z.array(
-		z.string({
-			required_error: 'synonyms field is required',
-			invalid_type_error: 'synonyms values must be a string',
-		})
-	),
-	antonyms: z.array(
-		z.string({
-			required_error: 'antonyms field is required',
-			invalid_type_error: 'antonyms values must be a string',
-		})
-	),
+	synonyms: z.array(z.string().nullable()).nullable(),
+	antonyms: z.array(z.string().nullable()).nullable(),
 	definition: z.string({
 		required_error: 'definition field is required',
 		invalid_type_error: 'definition value must be a string',
