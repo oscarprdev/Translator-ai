@@ -1,8 +1,11 @@
 import OpenAI from 'openai';
+import { config } from 'dotenv';
+
+config();
 
 export class OpenAiClient {
 	readonly openai: OpenAI;
-	readonly openApiKey: string = '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';
+	readonly openApiKey?: string = process.env.OPEN_API_KEY;
 	readonly model: string = 'gpt-4-1106-preview';
 	readonly role: string = 'You are an english teacher.';
 

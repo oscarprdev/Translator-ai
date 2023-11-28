@@ -17,8 +17,8 @@ export default function NavLink({ pathname, params, targetInfo, label }: NavLink
 	return (
 		<Link
 			href={targetHref}
-			className='flex flex-col items-center px-4'>
-			<p className={`${isSelected ? 'text-zinc-200' : 'text-zinc-500'}`}>{label}</p>
+			className='flex flex-col items-center px-4 '>
+			<p className={`hover:text-zinc-300 ${isSelected ? 'text-zinc-200' : 'text-zinc-500'}`}>{label}</p>
 			<span
 				className={`mt-1 w-full h-1 bg-[var(--contrast-color)] block transition-all duration-300 ease-in-out transform ${
 					isSelected ? 'scale-x-100' : 'scale-x-0'

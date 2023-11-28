@@ -4,10 +4,12 @@ import TranslatedInfoSkeleton from '../translated-info-skeleton/translated-info-
 
 interface TranslatedInfoProps {
 	input?: string;
+	langInput: string;
+	langOutput: string;
 	info: string;
 }
 
-export default function TranslatedInfo({ input, info }: TranslatedInfoProps) {
+export default function TranslatedInfo({ input, langInput, langOutput, info }: TranslatedInfoProps) {
 	return (
 		<section className='flex flex-col w-full h-full bg-[var(--bg-translated-section)]'>
 			{input && (
@@ -16,6 +18,8 @@ export default function TranslatedInfo({ input, info }: TranslatedInfoProps) {
 					fallback={<TranslatedInfoSkeleton />}>
 					<TranslatedInfoServer
 						input={input}
+						langInput={langInput}
+						langOutput={langOutput}
 						info={info}
 					/>
 				</Suspense>

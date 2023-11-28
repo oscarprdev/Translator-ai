@@ -59,7 +59,7 @@ export default function DetailsInfo({ title, content, contentTranslated, keyWord
 			<button
 				onClick={toggleTranslated}
 				className='absolute bottom-0 right-2 text-xs p-1 rounded-full  text-[var(--contrast-color)] hover:text-[var(--contrast-color-hover)]'>
-				{translated ? 'Translate' : 'Traducir'}
+				{translated ? 'Traducir' : 'Translate'}
 			</button>
 		</article>
 	);

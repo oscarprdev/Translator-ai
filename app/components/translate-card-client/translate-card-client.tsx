@@ -5,9 +5,9 @@ import LanguageSelector from '../language-selector/language-selector';
 import { LanguagesParams } from '../language-selector/language-selector.types';
 import TranslateCardInput from '../translate-card-input/translate-card-input';
 
-const DEFAULT_LANG_PARAMS: LanguagesParams = {
-	langInput: 'English',
-	langOutput: 'Spanish',
+export const DEFAULT_LANG_PARAMS: LanguagesParams = {
+	langInput: 'english',
+	langOutput: 'spanish',
 };
 
 export default function TranslateCardClient() {

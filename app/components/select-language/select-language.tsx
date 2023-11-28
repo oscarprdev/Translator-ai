@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { LangParams } from '../language-selector/language-selector.types';
 
-const languagesAvailables = ['English', 'Spanish'];
+const languagesAvailables = ['english', 'spanish'];
 
 interface SelectLanguageProps {
 	name: LangParams.input | LangParams.output;

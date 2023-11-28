@@ -2,9 +2,15 @@
 
 import { provideInfoAction } from '../../actions/translate-input/translate-input.action';
 
-export default async function TranslateCardServer({ input }: { input: string }) {
+interface TranslateCardServerProps {
+	input: string;
+	langInput: string;
+	langOutput: string;
+}
+
+export default async function TranslateCardServer({ input, langInput, langOutput }: TranslateCardServerProps) {
 	const action = provideInfoAction();
-	const inputObject = { word: input, langInput: 'english', langOutput: 'spanish' };
+	const inputObject = { word: input, langInput, langOutput };
 
 	const entry = await action.execute(inputObject);
 
