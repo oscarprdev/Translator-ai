@@ -15,6 +15,7 @@ export class DefaultGenerateInfoUsecase implements GenerateInfoUsecase {
 		the output must has a data object in JSON following the pattern:
 			   data: {
 				kind: 'adjective' | 'noun' | 'verb' | etc.. // determine which one fits better with the input received, must be only one of this and this should be trasnlated to: ${langInput}
+				lang: // string // ${langInput} // Keep this value as it is, must not be translated
 				word: // input to translate, fix it if there is some miss-spell or any error on the input.
 				synonyms: // string[] // synonyms of the input in ${langInput}, if it is a phrasal verb or an idiom, generate similar phrasal verbs or idioms with similar meaning.
 				antonyms: // string[] // antonyms of the input in ${langInput}, if it is a phrasal verb or an idiom, generate similar phrasal verbs or idioms with opposite meaning.
@@ -23,7 +24,7 @@ export class DefaultGenerateInfoUsecase implements GenerateInfoUsecase {
 				uses: string // generate uses explanation in ${langInput} explaining in which situation should be used, no more than 50 words, the uses response must start with the pattern: "Use "word" to/when/for ...".
 				translations: [
 					{
-						language: ${langOutput},
+						lang: ${langOutput}, // language of the translated word, this name must be in english, for instance: spanish, german, italian etc
 						translation: The input value translated to ${langOutput}
 					}
 				]

@@ -2,7 +2,7 @@ import { WordWithTranslations } from '../../shared/types/word-translated';
 import { ZodValidation } from '../../shared/validation/zod-validation';
 import { StoreWordPorts } from '../application/store-word.ports';
 import { StoreWordInfra } from '../infra/store-word.infra';
-import { storeWordInputSchema, storeWordOutputSchema } from './store-word.adapter.schemas';
+import { storeWordInputSchema } from './store-word.adapter.schemas';
 
 export class StoreWordAdapter implements StoreWordPorts {
 	constructor(private readonly infra: StoreWordInfra, private readonly zod: ZodValidation) {}
@@ -11,17 +11,24 @@ export class StoreWordAdapter implements StoreWordPorts {
 		return this.zod.validate<Omit<WordWithTranslations, 'id'>>(storeWordInputSchema, input);
 	}
 
-	private validateOutput(input: WordWithTranslations) {
-		return this.zod.validate<WordWithTranslations>(storeWordOutputSchema, input);
-	}
-
 	async storeWord({ data }: StoreWordPorts.StoreWordInput): Promise<StoreWordPorts.StoreWordOutput> {
 		const validInput = this.validateInput(data);
 
 		const response = await this.infra.storeWord({ data: validInput });
 
 		return {
-			data: this.validateOutput(response.data),
+			data: {
+				id: response.data.id,
+				word: response.data.word,
+				kind: response.data.kind,
+				lang: response.data.lang,
+				examples: response.data.examples,
+				definition: response.data.definition,
+				synonyms: response.data.synonyms,
+				antonyms: response.data.antonyms,
+				uses: response.data.uses,
+				translations: response.data.translations,
+			},
 		};
 	}
 }

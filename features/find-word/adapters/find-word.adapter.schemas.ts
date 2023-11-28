@@ -11,5 +11,3 @@ export const findWordInputSchema = z.object({
 		invalid_type_error: 'lang value must be a string',
 	}),
 });
-
-export const findWordOutputSchema = z.object(TranslatedEntrySchema);

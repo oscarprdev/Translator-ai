@@ -8,9 +8,7 @@ interface TranslatedInfoServerProps {
 	info: string;
 }
 export default async function TranslatedInfoServer({ input, info }: TranslatedInfoServerProps) {
-	const { entryInput, entryOutput } = await provideInfoAction({ word: input, langInput: 'english', langOutput: 'spanish' });
-
-	console.log(entryInput, entryOutput, 'server component');
+	const { entryInput, entryOutput } = await provideInfoAction({ word: input, langInput: 'english', langOutput: 'german' });
 
 	return (
 		<section className='flex flex-col gap-10 w-full px-10 pb-10'>
@@ -19,7 +17,7 @@ export default async function TranslatedInfoServer({ input, info }: TranslatedIn
 				<TranslatedInfoDetails
 					definition={entryInput.definition}
 					definitionTranslated={entryOutput.definition}
-					example={entryInput.examples}
+					examples={entryInput.examples}
 					exampleTranslated={entryOutput.examples}
 					uses={entryInput.uses}
 					usesTranslated={entryOutput.uses}

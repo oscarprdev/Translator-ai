@@ -1,7 +1,7 @@
 import { TranslatedEntry } from '@prisma/client';
 
 export interface Translation {
-	language: string;
+	lang: string;
 	translation: string;
 }
 

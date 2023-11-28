@@ -25,8 +25,8 @@ export const provideInfoAction = async ({ word, langInput, langOutput }: Provide
 		}
 
 		// If input word already exist on database
-		if (inputWord) {
-			const wordToFind = inputWord.data?.translations.find((translation) => translation.language === langOutput)?.translation;
+		if (inputWord.data) {
+			const wordToFind = inputWord.data?.translations.find((translation) => translation.lang === langOutput)?.translation;
 
 			// If word is already translated and stored in database
 			if (wordToFind) {
@@ -38,41 +38,45 @@ export const provideInfoAction = async ({ word, langInput, langOutput }: Provide
 
 				// If output word already exist on database
 				if (outputWord.data) {
-					console.log(inputWord, outputWord, 'first return ');
 					return {
-						entryInput: inputWord,
-						entryOutput: outputWord,
+						entryInput: inputWord.data,
+						entryOutput: outputWord.data,
 					};
 				}
 			}
 
 			// Find translated word from input information
-			const outputWordTranslated = await translateWordUsecase.translateWord({ input: word, langInput: langOutput, langOutput: langInput });
+			const outputWordTranslated = await translateWordUsecase.translateWord({ input: word, langInput, langOutput });
 
 			if (outputWordTranslated.state === UsecaseOutputState.error) {
 				throw new Error(outputWordTranslated.error || `Error translating ${word} from ${langOutput} to ${langInput}`);
 			}
 
 			// Generate info of output word
-			const outputWord = await generateInfo.generateInfo({ input: outputWordTranslated.data.from, langInput, langOutput });
+			const outputWord = await generateInfo.generateInfo({
+				input: outputWordTranslated.data.to,
+				langInput: langOutput,
+				langOutput: langInput,
+			});
 
 			if (outputWord.state === UsecaseOutputState.error) {
 				throw new Error(outputWord.error || `Error translating ${word} from ${langInput} to ${langOutput}`);
 			}
 
+			console.log(outputWord.data);
 			// Store output word info in database
 			const outputWordStored = await storeWordUsecase.storeWord({ data: outputWord.data });
 
-			if (!outputWordStored) {
+			console.log(outputWordStored);
+
+			if (outputWordStored.state === UsecaseOutputState.error) {
 				throw new Error(`Error storing ${word} in database`);
 			}
 
-			console.log(inputWord, outputWordStored, 'second return');
-
 			// Return input and output information successfully stored in database
 			return {
-				entryInput: inputWord,
-				entryOutput: outputWordStored,
+				entryInput: inputWord.data,
+				entryOutput: outputWordStored.data,
 			};
 		}
 
@@ -83,45 +87,70 @@ export const provideInfoAction = async ({ word, langInput, langOutput }: Provide
 			throw new Error(inputWordGenerated.error || `Error translating ${word} from ${langInput} to ${langOutput}`);
 		}
 
+		console.log(inputWordGenerated.data);
 		// Store input info word in database
 		const inputWordStored = await storeWordUsecase.storeWord({ data: inputWordGenerated.data });
+
+		console.log(inputWordStored);
 
 		if (inputWordStored.state === UsecaseOutputState.error) {
 			throw new Error(`Error storing ${word} in database`);
 		}
 
 		// Find word translated
-		const outputWordTranslated = inputWordStored.data.translations.find((translation) => translation.language === langOutput)?.translation;
+		const outputWordAlreadyTranslated = inputWordStored.data.translations.find(
+			(translation) => translation.lang === langOutput
+		)?.translation;
 
-		if (outputWordTranslated) {
+		if (outputWordAlreadyTranslated) {
 			// Generate output info word
-			const outputWordGenerated = await generateInfo.generateInfo({
-				input: outputWordTranslated,
-				langInput: langOutput,
-				langOutput: langInput,
-			});
+			const outputWordTranslated = await findWordUsecase.findWordStored({ word: outputWordAlreadyTranslated, lang: langOutput });
 
-			if (outputWordGenerated.state === UsecaseOutputState.error) {
-				throw new Error(outputWordGenerated.error || `Error translating ${word} from ${langOutput} to ${langInput}`);
+			if (outputWordTranslated.state === UsecaseOutputState.error) {
+				throw new Error(outputWordTranslated.error || `Error retrieving ${outputWordAlreadyTranslated} from database`);
 			}
 
-			// Store output info word in database
-			const outputWordStored = await storeWordUsecase.storeWord({ data: outputWordGenerated.data });
-
-			if (!outputWordStored) {
-				throw new Error(`Error storing ${word} in database`);
+			// If output word already exist on database
+			if (outputWordTranslated.data) {
+				return {
+					entryInput: inputWordStored.data,
+					entryOutput: outputWordTranslated.data,
+				};
 			}
-
-			console.log(inputWordStored, outputWordStored, 'third return');
-
-			// Return both input and output successfully generated and stored in database
-			return {
-				entryInput: inputWordStored,
-				entryOutput: outputWordStored,
-			};
 		}
 
-		console.log('undefined');
+		const outputWordTranslated = await translateWordUsecase.translateWord({ input: word, langInput, langOutput });
+
+		if (outputWordTranslated.state === UsecaseOutputState.error) {
+			throw new Error(outputWordTranslated.error || `Error translating ${word} from ${langOutput} to ${langInput}`);
+		}
+
+		const outputWordGenerated = await generateInfo.generateInfo({
+			input: outputWordTranslated.data.to,
+			langInput: langOutput,
+			langOutput: langInput,
+		});
+
+		if (outputWordGenerated.state === UsecaseOutputState.error) {
+			throw new Error(outputWordGenerated.error || `Error translating ${word} from ${langOutput} to ${langInput}`);
+		}
+
+		console.log(outputWordGenerated.data);
+
+		// Store output info word in database
+		const outputWordStored = await storeWordUsecase.storeWord({ data: outputWordGenerated.data });
+
+		if (outputWordStored.state === UsecaseOutputState.error) {
+			throw new Error(`Error storing ${word} in database`);
+		}
+
+		console.log(outputWordStored.data);
+
+		// Return both input and output successfully generated and stored in database
+		return {
+			entryInput: inputWordStored.data,
+			entryOutput: outputWordStored.data,
+		};
 	} catch (error: any) {
 		redirect(`?error=${error.message}`);
 	}

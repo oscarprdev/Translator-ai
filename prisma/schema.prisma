@@ -26,7 +26,7 @@ model TranslatedEntry {
 model Translations {
   id String @id @default(uuid())
 
-  language    String
+  lang        String
   translation String
   entryId     String
   entry       TranslatedEntry @relation(fields: [entryId], references: [id])

@@ -3,7 +3,7 @@ import DetailsInfo from '../details-info/details-info';
 interface TranslatedInfoDetailsProps {
 	definition: string;
 	definitionTranslated: string;
-	example: string[];
+	examples: string[];
 	exampleTranslated: string[];
 	uses: string;
 	usesTranslated: string;
@@ -23,7 +23,7 @@ export default function TranslatedInfoDetails(props: TranslatedInfoDetailsProps)
 			/>
 			<DetailsInfo
 				title='Example'
-				content={props.example[0]}
+				content={props.examples[0]}
 				contentTranslated={props.exampleTranslated[0]}
 				keyWord={props.keyWord}
 				keyWordTranslated={props.keyWordTranslated}

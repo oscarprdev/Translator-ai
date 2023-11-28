@@ -17,7 +17,7 @@ async function main() {
 					definition: 'Having great physical power.',
 					uses: 'Commonly used to describe physical strength.',
 					translations: {
-						create: [{ language: 'spanish', translation: 'fuerte' }],
+						create: [{ lang: 'spanish', translation: 'fuerte' }],
 					},
 				},
 			},
@@ -45,7 +45,7 @@ async function main() {
 					definition: 'Que tiene gran fuerza física.',
 					uses: 'Comúnmente utilizado para describir la fuerza física.',
 					translations: {
-						create: [{ language: 'english', translation: 'strong' }],
+						create: [{ lang: 'english', translation: 'strong' }],
 					},
 				},
 			},

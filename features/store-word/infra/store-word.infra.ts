@@ -10,8 +10,9 @@ export class DefaultStoreWordInfra implements StoreWordInfra {
 
 	async storeWord({ data }: StoreWordInfraTypes.Input): Promise<StoreWordInfraTypes.Output> {
 		try {
-			const response = await this.db.dictionary.create({
-				data: {
+			const response = await this.db.dictionary.upsert({
+				where: { language: data.lang },
+				create: {
 					language: data.lang,
 					entries: {
 						create: {
@@ -24,7 +25,24 @@ export class DefaultStoreWordInfra implements StoreWordInfra {
 							definition: data.definition,
 							uses: data.uses,
 							translations: {
-								create: data.translations,
+								create: [{ lang: data.translations[0].lang, translation: data.translations[0].translation }],
+							},
+						},
+					},
+				},
+				update: {
+					entries: {
+						create: {
+							kind: data.kind,
+							lang: data.lang,
+							word: data.word,
+							synonyms: data.synonyms,
+							antonyms: data.antonyms,
+							examples: data.examples,
+							definition: data.definition,
+							uses: data.uses,
+							translations: {
+								create: [{ lang: data.translations[0].lang, translation: data.translations[0].translation }],
 							},
 						},
 					},
@@ -48,6 +66,7 @@ export class DefaultStoreWordInfra implements StoreWordInfra {
 				throw new Error('Error storing in database the translated entry');
 			}
 		} catch (error: unknown) {
+			console.log(error);
 			throw new Error(JSON.stringify(error));
 		}
 	}
