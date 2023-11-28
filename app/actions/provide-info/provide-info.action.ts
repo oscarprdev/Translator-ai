@@ -9,50 +9,17 @@ import { findWordUsecase } from '../../../features/find-word';
 import { translateWordUsecase } from '../../../features/translate-word';
 import { storeInfoUsecase } from '../../../features/store-word';
 import { generateInfoUsecase } from '../../../features/generate-info';
-
-export abstract class Action<I, O> {
-	abstract execute(input: I): Promise<O>;
-}
-
-interface ProvideInfoActionInput {
-	word: string;
-	langInput: string;
-	langOutput: string;
-}
-
-interface ProvideInfoActionOutput {
-	entryInput: WordWithTranslations;
-	entryOutput: WordWithTranslations;
-}
+import { Action } from '../common/action';
+import { HandleWordTranslatedInput, ProvideInfoActionInput, ProvideInfoActionOutput } from './provide-info.types';
 
 class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoActionOutput> {
 	constructor(
-		private readonly findWordUsecase: FindWordUsecase,
+		protected readonly findWordUsecase: FindWordUsecase,
 		private readonly generateInfoUsecase: GenerateInfoUsecase,
-		private readonly translateWordUsecase: TranslateWordUsecase,
+		protected readonly translateWordUsecase: TranslateWordUsecase,
 		private readonly storeWordUsecase: StoreWordUsecase
 	) {
-		super();
-	}
-
-	private async handleFindWordStored(word: string, lang: string) {
-		const wordStored = await this.findWordUsecase.findWordStored({ word, lang });
-
-		if (wordStored.state === UsecaseOutputState.error) {
-			throw new Error(`Error retrieving ${word} from database: ${wordStored.error}`);
-		}
-
-		return wordStored.data;
-	}
-
-	private async handleTranslateWord(word: string, langInput: string, langOutput: string) {
-		const wordTranslated = await this.translateWordUsecase.translateWord({ input: word, langInput, langOutput });
-
-		if (wordTranslated.state === UsecaseOutputState.error) {
-			throw new Error(`Error translating ${word} from ${langOutput} to ${langInput}: ${wordTranslated.error}`);
-		}
-
-		return wordTranslated.data.to;
+		super(findWordUsecase, translateWordUsecase);
 	}
 
 	private async handleGenerateInfo(word: string, langInput: string, langOutput: string) {
@@ -94,6 +61,26 @@ class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoAction
 		return outputWordStored;
 	}
 
+	private async handleWordTranslated({ wordToFind, wordOriginal, langInput, langOutput, inputStored }: HandleWordTranslatedInput) {
+		if (wordToFind) {
+			const outputWordAlreadyStored = await this.handleFindWordStored(wordToFind, langOutput);
+
+			if (outputWordAlreadyStored) {
+				return {
+					entryInput: inputStored,
+					entryOutput: outputWordAlreadyStored,
+				};
+			}
+		}
+
+		const newTranslatedWord = await this.generateTranslatedNewWord(wordOriginal, langOutput, langInput);
+
+		return {
+			entryInput: inputStored,
+			entryOutput: newTranslatedWord,
+		};
+	}
+
 	async execute({ word, langInput, langOutput }: ProvideInfoActionInput) {
 		try {
 			const inputWordAlreadyStored = await this.handleFindWordStored(word, langInput);
@@ -101,23 +88,13 @@ class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoAction
 			if (inputWordAlreadyStored) {
 				const wordToFind = inputWordAlreadyStored?.translations.find((translation) => translation.lang === langOutput)?.translation;
 
-				if (wordToFind) {
-					const outputWordAlreadyStored = await this.handleFindWordStored(wordToFind, langOutput);
-
-					if (outputWordAlreadyStored) {
-						return {
-							entryInput: inputWordAlreadyStored,
-							entryOutput: outputWordAlreadyStored,
-						};
-					}
-				}
-
-				const newTranslatedWord = await this.generateTranslatedNewWord(word, langOutput, langInput);
-
-				return {
-					entryInput: inputWordAlreadyStored,
-					entryOutput: newTranslatedWord,
-				};
+				return await this.handleWordTranslated({
+					wordToFind,
+					wordOriginal: word,
+					langInput,
+					langOutput,
+					inputStored: inputWordAlreadyStored,
+				});
 			}
 
 			const inputWordGenerated = await this.generateNewWord(word, langInput, langOutput);
@@ -125,23 +102,13 @@ class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoAction
 				(translation) => translation.lang === langOutput
 			)?.translation;
 
-			if (outputWordAlreadyTranslated) {
-				const outputWordStored = await this.handleFindWordStored(outputWordAlreadyTranslated, langOutput);
-
-				if (outputWordStored) {
-					return {
-						entryInput: inputWordGenerated,
-						entryOutput: outputWordStored,
-					};
-				}
-			}
-
-			const newTranslatedOutputWord = await this.generateTranslatedNewWord(word, langOutput, langInput);
-
-			return {
-				entryInput: inputWordGenerated,
-				entryOutput: newTranslatedOutputWord,
-			};
+			return await this.handleWordTranslated({
+				wordToFind: outputWordAlreadyTranslated,
+				wordOriginal: word,
+				langInput,
+				langOutput,
+				inputStored: inputWordGenerated,
+			});
 		} catch (error: any) {
 			redirect(`?error=${error.message}`);
 		}
