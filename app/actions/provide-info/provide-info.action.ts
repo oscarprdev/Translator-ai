@@ -63,11 +63,8 @@ export const provideInfoAction = async ({ word, langInput, langOutput }: Provide
 				throw new Error(outputWord.error || `Error translating ${word} from ${langInput} to ${langOutput}`);
 			}
 
-			console.log(outputWord.data);
 			// Store output word info in database
 			const outputWordStored = await storeWordUsecase.storeWord({ data: outputWord.data });
-
-			console.log(outputWordStored);
 
 			if (outputWordStored.state === UsecaseOutputState.error) {
 				throw new Error(`Error storing ${word} in database`);
@@ -87,11 +84,8 @@ export const provideInfoAction = async ({ word, langInput, langOutput }: Provide
 			throw new Error(inputWordGenerated.error || `Error translating ${word} from ${langInput} to ${langOutput}`);
 		}
 
-		console.log(inputWordGenerated.data);
 		// Store input info word in database
 		const inputWordStored = await storeWordUsecase.storeWord({ data: inputWordGenerated.data });
-
-		console.log(inputWordStored);
 
 		if (inputWordStored.state === UsecaseOutputState.error) {
 			throw new Error(`Error storing ${word} in database`);
@@ -135,16 +129,12 @@ export const provideInfoAction = async ({ word, langInput, langOutput }: Provide
 			throw new Error(outputWordGenerated.error || `Error translating ${word} from ${langOutput} to ${langInput}`);
 		}
 
-		console.log(outputWordGenerated.data);
-
 		// Store output info word in database
 		const outputWordStored = await storeWordUsecase.storeWord({ data: outputWordGenerated.data });
 
 		if (outputWordStored.state === UsecaseOutputState.error) {
 			throw new Error(`Error storing ${word} in database`);
 		}
-
-		console.log(outputWordStored.data);
 
 		// Return both input and output successfully generated and stored in database
 		return {

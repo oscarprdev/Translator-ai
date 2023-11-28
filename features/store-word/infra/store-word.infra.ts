@@ -66,7 +66,6 @@ export class DefaultStoreWordInfra implements StoreWordInfra {
 				throw new Error('Error storing in database the translated entry');
 			}
 		} catch (error: unknown) {
-			console.log(error);
 			throw new Error(JSON.stringify(error));
 		}
 	}
