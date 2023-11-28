@@ -1,9 +1,12 @@
 'use server';
 
-import { translateInputAction } from '../../actions/translate-input/translate-input.action';
+import { provideInfoAction } from '../../actions/translate-input/translate-input.action';
 
 export default async function TranslateCardServer({ input }: { input: string }) {
-	const entry = await translateInputAction(input);
+	const action = provideInfoAction();
+	const inputObject = { word: input, langInput: 'english', langOutput: 'spanish' };
+
+	const entry = await action.execute(inputObject);
 
 	return (
 		<div className='relative grid place-items-center h-14 w-[60%] bg-[var(--bg-translated-card)]'>

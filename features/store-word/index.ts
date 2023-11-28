@@ -7,5 +7,4 @@ import { DefaultStoreWordInfra } from './infra/store-word.infra';
 const validation = new DefaultZodValidation();
 const storeWordInfra = new DefaultStoreWordInfra(db);
 const storeWordAdapter = new StoreWordAdapter(storeWordInfra, validation);
-
-export const provideStoreInfoUsecase = () => new DefaultStoreWordUsecase(storeWordAdapter);
+export const storeInfoUsecase = new DefaultStoreWordUsecase(storeWordAdapter);

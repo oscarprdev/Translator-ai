@@ -9,5 +9,4 @@ const clientAi = new OpenAiClient();
 
 const generateInfoInfra = new DefaultGenerateInfoInfra(clientAi);
 const generateInfoAdapter = new GenerateInfoAdapter(generateInfoInfra, validation);
-
-export const provideGenerateInfoUsecase = () => new DefaultGenerateInfoUsecase(generateInfoAdapter);
+export const generateInfoUsecase = new DefaultGenerateInfoUsecase(generateInfoAdapter);

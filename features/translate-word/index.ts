@@ -9,5 +9,4 @@ const clientAi = new OpenAiClient();
 
 const translateWordInfra = new DefaultTranslateWordInfra(clientAi);
 const translateWordAdapter = new TranslateWordAdapter(translateWordInfra, validation);
-
-export const provideTranslateWordUsecase = () => new DefaultTranslateWordUsecase(translateWordAdapter);
+export const translateWordUsecase = new DefaultTranslateWordUsecase(translateWordAdapter);

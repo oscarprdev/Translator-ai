@@ -7,5 +7,4 @@ import { DefaultFindWordInfra } from './infra/find-word.infra';
 const validation = new DefaultZodValidation();
 const findWordInfra = new DefaultFindWordInfra(db);
 const findWordAdapter = new FindWordAdapter(findWordInfra, validation);
-
-export const provideFindWordUsecase = () => new DefaultFindWordUsecase(findWordAdapter);
+export const findWordUsecase = new DefaultFindWordUsecase(findWordAdapter);

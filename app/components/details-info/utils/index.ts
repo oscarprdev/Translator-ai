@@ -6,6 +6,7 @@ export function isHightlightedKeyWord(word: string, keyWord: string) {
 		initialWord === incomingWord ||
 		initialWord === `'${incomingWord}'` ||
 		initialWord === `${incomingWord},` ||
-		initialWord === `${incomingWord}.`
+		initialWord === `${incomingWord}.` ||
+		initialWord === `'${incomingWord}`
 	);
 }

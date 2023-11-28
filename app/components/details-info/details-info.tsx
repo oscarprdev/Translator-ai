@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { isHightlightedKeyWord } from './utils';
-import { TranslateIcon } from '../icons/translate-icon';
 
 interface DetailsInfoProps {
 	title: string;

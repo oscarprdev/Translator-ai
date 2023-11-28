@@ -8,7 +8,10 @@ interface TranslatedInfoServerProps {
 	info: string;
 }
 export default async function TranslatedInfoServer({ input, info }: TranslatedInfoServerProps) {
-	const { entryInput, entryOutput } = await provideInfoAction({ word: input, langInput: 'english', langOutput: 'spanish' });
+	const action = provideInfoAction();
+	const inputObject = { word: input, langInput: 'english', langOutput: 'spanish' };
+
+	const { entryInput, entryOutput } = await action.execute(inputObject);
 
 	return (
 		<section className='flex flex-col gap-10 w-full px-10 pb-10'>

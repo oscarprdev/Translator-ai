@@ -1,43 +1,71 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { provideTranslateWordUsecase } from '../../../features/translate-word';
 import { UsecaseOutputState } from '../../../features/shared/types/usecase-output-state';
-import { provideFindWordUsecase } from '../../../features/find-word';
+import { FindWordUsecase } from '../../../features/find-word/application/find-word.usecase';
+import { TranslateWordUsecase } from '../../../features/translate-word/application/translate-word.usecase';
+import { Action } from '../provide-info/provide-info.action';
+import { findWordUsecase } from '../../../features/find-word';
+import { translateWordUsecase } from '../../../features/translate-word';
 
-export const translateInputAction = async (input: string) => {
-	try {
-		const translateWordUsecase = provideTranslateWordUsecase();
-		const findWordUsecase = provideFindWordUsecase();
+interface TranslateInputActionInput {
+	word: string;
+	langInput: string;
+	langOutput: string;
+}
 
-		const handleTranslated = { input, langInput: 'english', langOutput: 'spanish' };
+interface TranslateInputActionOutput {
+	from: string;
+	to: string;
+}
 
-		const wordAlreadyStored = await findWordUsecase.findWordStored({ word: input, lang: 'english' });
-
-		if (wordAlreadyStored.state === UsecaseOutputState.error) {
-			throw new Error(wordAlreadyStored.error || `Error finding word ${input} translated`);
-		}
-
-		const wordTranslated = wordAlreadyStored.data?.translations.find((translation) => translation.lang === 'spanish');
-
-		if (wordTranslated) {
-			return {
-				from: input,
-				to: wordTranslated.translation,
-			};
-		}
-
-		const response = await translateWordUsecase.translateWord(handleTranslated);
-
-		if (response.state === UsecaseOutputState.error) {
-			throw new Error(response.error || `Error translating word ${input}`);
-		}
-
-		return {
-			from: response.data.from,
-			to: response.data.to,
-		};
-	} catch (error: any) {
-		redirect(`?error=${error.message}`);
+class TranslateInputAction extends Action<TranslateInputActionInput, TranslateInputActionOutput> {
+	constructor(private readonly findWordUsecase: FindWordUsecase, private readonly translateWordUsecase: TranslateWordUsecase) {
+		super();
 	}
-};
+
+	private async handleFindWordStored(word: string, lang: string) {
+		const wordStored = await this.findWordUsecase.findWordStored({ word, lang });
+
+		if (wordStored.state === UsecaseOutputState.error) {
+			throw new Error(`Error retrieving ${word} from database: ${wordStored.error}`);
+		}
+
+		return wordStored.data;
+	}
+
+	private async handleTranslateWord(word: string, langInput: string, langOutput: string) {
+		const wordTranslated = await this.translateWordUsecase.translateWord({ input: word, langInput, langOutput });
+
+		if (wordTranslated.state === UsecaseOutputState.error) {
+			throw new Error(`Error translating ${word} from ${langOutput} to ${langInput}: ${wordTranslated.error}`);
+		}
+
+		return wordTranslated.data.to;
+	}
+
+	async execute({ word, langInput, langOutput }: TranslateInputActionInput) {
+		try {
+			const wordAlreadyStored = await this.handleFindWordStored(word, langInput);
+			const wordTranslated = wordAlreadyStored?.translations.find((translation) => translation.lang === langOutput);
+
+			if (wordTranslated && wordAlreadyStored) {
+				return {
+					from: wordAlreadyStored?.word,
+					to: wordTranslated.translation,
+				};
+			}
+
+			const translatedWord = await this.handleTranslateWord(word, langInput, langOutput);
+
+			return {
+				from: word,
+				to: translatedWord,
+			};
+		} catch (error: any) {
+			redirect(`?error=${error.message}`);
+		}
+	}
+}
+
+export const provideInfoAction = () => new TranslateInputAction(findWordUsecase, translateWordUsecase);
