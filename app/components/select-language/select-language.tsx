@@ -18,7 +18,7 @@ export default function SelectLanguage({ name, selected, handleSelectLanguages }
 				<option
 					key={crypto.randomUUID().toString()}
 					value={lang}
-					selected={lang === selected}>
+					defaultValue={lang === selected ? lang : 0}>
 					{lang}
 				</option>
 			))}

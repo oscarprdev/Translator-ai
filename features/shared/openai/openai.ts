@@ -7,7 +7,8 @@ export class OpenAiClient {
 	readonly openai: OpenAI;
 	readonly openApiKey?: string = process.env.OPEN_API_KEY;
 	readonly model: string = 'gpt-4-1106-preview';
-	readonly role: string = 'You are an english teacher.';
+	readonly role: string =
+		'You are an professional philologist with vast experience in english, spanish, german, italian, japanish, chinise languagaes.';
 
 	constructor() {
 		this.openai = new OpenAI({ apiKey: this.openApiKey });

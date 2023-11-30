@@ -6,9 +6,9 @@ export interface TranslateWordInfra {
 }
 
 export class DefaultTranslateWordInfra implements TranslateWordInfra {
-	constructor(private readonly openaiClient: OpenAiClient) {}
+	constructor(private readonly clientAI: OpenAiClient) {}
 
 	async translateWord({ prompt }: TranslateWordInfraTypes.Input): Promise<TranslateWordInfraTypes.Output> {
-		return await this.openaiClient.execute<TranslateWordInfraTypes.Output>(prompt);
+		return await this.clientAI.execute<TranslateWordInfraTypes.Output>(prompt);
 	}
 }

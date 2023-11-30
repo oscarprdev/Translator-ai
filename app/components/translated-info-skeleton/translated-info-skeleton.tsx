@@ -6,10 +6,13 @@ export default function TranslatedInfoSkeleton() {
 					<p className='text-zinc-500'>Details</p>
 				</div>
 				<div className='flex flex-col items-center px-4'>
-					<p className='text-zinc-500'>Synonyms & Antonyms</p>
+					<p className='text-zinc-500'>Synonyms</p>
 				</div>
 				<div className='flex flex-col items-center px-4'>
-					<p className='text-zinc-500'>Alternatives</p>
+					<p className='text-zinc-500'>Antonyms</p>
+				</div>
+				<div className='flex flex-col items-center px-4'>
+					<p className='text-zinc-500'>Examples</p>
 				</div>
 			</nav>
 			<article className='flex flex-col justify-center gap-2 pl-2 border-l-[3px] border-[var(--contrast-color)] h-24'>

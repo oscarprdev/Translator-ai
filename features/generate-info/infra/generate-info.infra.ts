@@ -1,3 +1,4 @@
+import { CloudflareClient } from '../../shared/cloudflare/cloudflare';
 import { OpenAiClient } from '../../shared/openai/openai';
 import { GenerateInfoInfraTypes } from './models';
 
@@ -6,9 +7,11 @@ export interface GenerateInfoInfra {
 }
 
 export class DefaultGenerateInfoInfra implements GenerateInfoInfra {
-	constructor(private readonly openaiClient: OpenAiClient) {}
+	constructor(private readonly clientAI: OpenAiClient) {}
 
 	async generateInfo(prompt: string): Promise<GenerateInfoInfraTypes.Output> {
-		return await this.openaiClient.execute<GenerateInfoInfraTypes.Output>(prompt);
+		const response = await this.clientAI.execute<GenerateInfoInfraTypes.Output>(prompt);
+		console.log(response);
+		return response;
 	}
 }

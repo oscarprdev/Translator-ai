@@ -11,10 +11,10 @@ export class DefaultTranslateWordUsecase implements TranslateWordUsecase {
 
 	private generatePrompt(input: string, langInput: string, langOutput: string) {
 		return `Translate me the input: ${input} from ${langInput} to ${langOutput}, 
-        the output must has a data object in JSON following the pattern:
+        the output must be exactly and only the data object in JSON format following the pattern:
                data: {
-                from: // input to translate.
-                to: // input translated to ${langOutput}.
+                from: string // input to translate.
+                to: string // input translated to ${langOutput}.
               }
         `;
 	}

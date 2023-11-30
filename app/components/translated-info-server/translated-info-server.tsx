@@ -1,9 +1,17 @@
-// import { translateEntryAction } from '@//actions/translate-entry/translate-entry.action';
+'use server';
+
 import TransalatedInfoNav from '../translated-info-nav/translated-info-nav';
 import TranslatedInfoDetails from '../translated-info-details/translated-info-details';
 import { provideInfoAction } from '../../actions/provide-info/provide-info.action';
-import Link from 'next/link';
 import TranslatedInfoSynAnt from '../translated-info-synant/translated-info-synant';
+import TranslatedInfoExamples from '../translated-info-examples/translated-info-examples';
+
+const TABS_LOCATIONS = {
+	details: 'det',
+	synonyms: 'syn',
+	antonyms: 'ant',
+	examples: 'ex',
+};
 
 interface TranslatedInfoServerProps {
 	input: string;
@@ -20,19 +28,19 @@ export default async function TranslatedInfoServer({ input, langInput, langOutpu
 	return (
 		<section className='flex flex-col gap-10 w-full px-10 pb-10'>
 			<TransalatedInfoNav />
-			{info === 'det' && (
+			{info === TABS_LOCATIONS.details && (
 				<TranslatedInfoDetails
+					kind={`${entryInput.kind} - ${entryOutput.kind}`}
+					phonetics={[...entryInput.phonetics, ...entryOutput.phonetics]}
 					definition={entryInput.definition}
 					definitionTranslated={entryOutput.definition}
-					examples={entryInput.examples}
-					exampleTranslated={entryOutput.examples}
 					uses={entryInput.uses}
 					usesTranslated={entryOutput.uses}
 					keyWord={input}
 					keyWordTranslated={entryOutput.word}
 				/>
 			)}
-			{info === 'syn' && (
+			{info === TABS_LOCATIONS.synonyms && (
 				<TranslatedInfoSynAnt
 					inputContent={entryInput.synonyms}
 					outputContent={entryOutput.synonyms}
@@ -41,13 +49,21 @@ export default async function TranslatedInfoServer({ input, langInput, langOutpu
 					kind={'synonyms'}
 				/>
 			)}
-			{info === 'ant' && (
+			{info === TABS_LOCATIONS.antonyms && (
 				<TranslatedInfoSynAnt
 					inputContent={entryInput.antonyms}
 					outputContent={entryOutput.antonyms}
 					langInput={langInput}
 					langOutput={langOutput}
 					kind={'antonyms'}
+				/>
+			)}
+			{info === TABS_LOCATIONS.examples && (
+				<TranslatedInfoExamples
+					examples={entryInput.examples}
+					examplesTranslated={entryOutput.examples}
+					keyword={input}
+					keyWordTranslated={entryOutput.word}
 				/>
 			)}
 		</section>

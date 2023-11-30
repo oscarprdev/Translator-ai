@@ -11,7 +11,7 @@ interface TranslatedInfoProps {
 
 export default function TranslatedInfo({ input, langInput, langOutput, info }: TranslatedInfoProps) {
 	return (
-		<section className='flex flex-col w-full h-full bg-[var(--bg-translated-section)]'>
+		<section className='flex flex-col pt-5 w-full h-full bg-[var(--bg-translated-section)]'>
 			{input && (
 				<Suspense
 					key={input}

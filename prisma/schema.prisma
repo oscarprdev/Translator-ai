@@ -12,6 +12,7 @@ datasource db {
 model TranslatedEntry {
   id           String         @id @default(uuid())
   lang         String
+  phonetics    String[]
   kind         String
   word         String         @unique
   synonyms     String[]

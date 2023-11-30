@@ -48,7 +48,7 @@ class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoAction
 
 	private async generateTranslatedNewWord(word: string, langInput: string, langOutput: string) {
 		const wordTranslated = await this.handleTranslateWord(word, langInput, langOutput);
-		const wordGenerated = await this.handleGenerateInfo(wordTranslated, langInput, langOutput);
+		const wordGenerated = await this.handleGenerateInfo(wordTranslated, langOutput, langInput);
 		const outputWordStored = await this.handleStoreWord(wordGenerated);
 
 		return outputWordStored;
@@ -73,7 +73,7 @@ class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoAction
 			}
 		}
 
-		const newTranslatedWord = await this.generateTranslatedNewWord(wordOriginal, langOutput, langInput);
+		const newTranslatedWord = await this.generateTranslatedNewWord(wordOriginal, langInput, langOutput);
 
 		return {
 			entryInput: inputStored,

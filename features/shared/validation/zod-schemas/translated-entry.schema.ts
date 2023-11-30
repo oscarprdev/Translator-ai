@@ -10,6 +10,16 @@ export const TranslatedEntrySchema = {
 		required_error: 'lang field is required',
 		invalid_type_error: 'lang value must be a string',
 	}),
+	phonetics: z
+		.array(
+			z
+				.string({
+					required_error: 'phonetics field is required',
+					invalid_type_error: 'phonetics values must be a string',
+				})
+				.nullable()
+		)
+		.nullable(),
 	word: z.string({
 		required_error: 'word field is required',
 		invalid_type_error: 'word value must be a string',

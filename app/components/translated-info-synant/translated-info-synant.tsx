@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ArrowUpRightIcon } from '../icons/arrow-up-right-icon';
 
 interface TranslatedInfoSynAntProps {
 	inputContent: string[];
@@ -18,8 +19,9 @@ export default function TranslatedInfoSynAnt({ inputContent, outputContent, lang
 						className='p-2 border-l-[3px] border-[var(--contrast-color)]'>
 						<Link
 							href={`/?input=${synonym}&langInput=${langInput}&langOutput=${langOutput}&info=det`}
-							className='text-zinc-100 hover:text-[var(--contrast-color)] hover:underline'>
+							className='w-fit flex items-start text-zinc-100 hover:text-[var(--contrast-color)] hover:underline'>
 							{synonym}
+							<ArrowUpRightIcon className='w-3' />
 						</Link>
 						<p className='text-zinc-400'>{outputContent[i]}</p>
 					</div>

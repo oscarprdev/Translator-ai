@@ -18,6 +18,7 @@ export class GenerateInfoAdapter implements GenerateInfoPorts {
 		return {
 			word: response.word,
 			kind: response.kind,
+			phonetics: response.phonetics,
 			lang: response.lang,
 			examples: response.examples,
 			definition: response.definition,
