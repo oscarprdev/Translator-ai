@@ -5,7 +5,7 @@ dotenv.config();
 export class CloudflareClient {
 	constructor() {}
 
-	async execute(prompt: string) {
+	async executeAudio(audio: string) {
 		const input = {
 			messages: [
 				{
@@ -19,13 +19,15 @@ export class CloudflareClient {
 			],
 		};
 
-		const response = await fetch(`${process.env.CLOUNDLARE_ENDPOINT}`, {
+		const response = await fetch(`${process.env.CLOUNDLARE_WHISPER_ENDPOINT}`, {
 			headers: { Authorization: `Bearer ${process.env.CLOUDFLARE_TOKEN}` },
 			method: 'POST',
-			body: JSON.stringify(input),
+			body: JSON.stringify(audio),
 		});
 
 		const result = await response.json();
+
+		console.log(result);
 
 		return result.result.response;
 	}
