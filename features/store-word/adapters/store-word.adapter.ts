@@ -12,7 +12,6 @@ export class StoreWordAdapter implements StoreWordPorts {
 	}
 
 	async storeWord({ data }: StoreWordPorts.StoreWordInput): Promise<StoreWordPorts.StoreWordOutput> {
-		console.log(data);
 		const validInput = this.validateInput(data);
 
 		const response = await this.infra.storeWord({ data: validInput });

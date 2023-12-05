@@ -10,8 +10,6 @@ export class DefaultGenerateInfoInfra implements GenerateInfoInfra {
 	constructor(private readonly clientAI: OpenAiClient) {}
 
 	async generateInfo(prompt: string): Promise<GenerateInfoInfraTypes.Output> {
-		const response = await this.clientAI.execute<GenerateInfoInfraTypes.Output>(prompt);
-		console.log(response);
-		return response;
+		return await this.clientAI.execute<GenerateInfoInfraTypes.Output>(prompt);
 	}
 }
