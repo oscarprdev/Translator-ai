@@ -37,4 +37,4 @@ class TranslateInputAction extends Action<TranslateInputActionInput, TranslateIn
 	}
 }
 
-export const provideInfoAction = () => new TranslateInputAction(findWordUsecase, translateWordUsecase);
+export const translateInfoAction = () => new TranslateInputAction(findWordUsecase, translateWordUsecase);

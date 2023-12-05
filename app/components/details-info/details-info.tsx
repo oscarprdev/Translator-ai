@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { isHightlightedKeyWord } from './utils';
+import ContentCard from '../content-card/content-card';
 
 interface DetailsInfoProps {
 	title: string;
@@ -10,29 +10,6 @@ interface DetailsInfoProps {
 	keyWord: string;
 	keyWordTranslated: string;
 }
-
-interface ContentProps {
-	content: string;
-	keyWord: string;
-}
-
-const Content = ({ content, keyWord }: ContentProps) => {
-	return (
-		<p className='text-zinc-400'>
-			{content.split(' ').map((word, i) =>
-				isHightlightedKeyWord(word, keyWord) ? (
-					<span
-						className='text-[var(--contrast-color)]'
-						key={i}>
-						{word}
-					</span>
-				) : (
-					<> {word} </>
-				)
-			)}
-		</p>
-	);
-};
 
 export default function DetailsInfo({ title, content, contentTranslated, keyWord, keyWordTranslated }: DetailsInfoProps) {
 	const [translated, setTranslated] = useState(false);
@@ -46,12 +23,12 @@ export default function DetailsInfo({ title, content, contentTranslated, keyWord
 			}`}>
 			<p className='text-zinc-100'>{title}</p>
 			{translated ? (
-				<Content
+				<ContentCard
 					content={contentTranslated}
 					keyWord={keyWordTranslated}
 				/>
 			) : (
-				<Content
+				<ContentCard
 					content={content}
 					keyWord={keyWord}
 				/>

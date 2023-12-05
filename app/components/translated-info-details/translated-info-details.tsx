@@ -1,7 +1,7 @@
 import DetailsInfo from '../details-info/details-info';
 
 interface TranslatedInfoDetailsProps {
-	kind: string;
+	kinds: string[];
 	phonetics: string[];
 	definition: string;
 	definitionTranslated: string;
@@ -16,7 +16,11 @@ export default function TranslatedInfoDetails(props: TranslatedInfoDetailsProps)
 		<>
 			<article className='relative flex flex-col justify-center gap-2 pl-2 border-l-[3px] border-[var(--contrast-color)] h-24'>
 				<p className='text-zinc-100'>Linguistics</p>
-				<p className='text-zinc-400'>{props.kind}</p>
+				<div className='flex items-center gap-2'>
+					<p className='text-zinc-400'>{props.kinds[0]}</p>
+					<span className='w-1 h-1 rounded-full bg-[var(--contrast-color)]' />
+					<p className='text-zinc-400'>{props.kinds[1]}</p>
+				</div>
 				<div className='flex items-center gap-2'>
 					{props.phonetics.map((pho) => (
 						<p

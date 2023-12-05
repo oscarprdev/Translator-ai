@@ -2,9 +2,9 @@
 
 import TransalatedInfoNav from '../translated-info-nav/translated-info-nav';
 import TranslatedInfoDetails from '../translated-info-details/translated-info-details';
-import { provideInfoAction } from '../../actions/provide-info/provide-info.action';
 import TranslatedInfoSynAnt from '../translated-info-synant/translated-info-synant';
 import TranslatedInfoExamples from '../translated-info-examples/translated-info-examples';
+import { provideInfoAction } from '@//actions/provide-info/provide-info.action';
 
 const TABS_LOCATIONS = {
 	details: 'det',
@@ -20,18 +20,17 @@ interface TranslatedInfoServerProps {
 	info: string;
 }
 export default async function TranslatedInfoServer({ input, langInput, langOutput, info }: TranslatedInfoServerProps) {
-	const action = provideInfoAction();
+	const usecase = provideInfoAction();
 	const inputObject = { word: input, langInput, langOutput };
-
-	const { entryInput, entryOutput } = await action.execute(inputObject);
+	const { entryInput, entryOutput } = await usecase.execute(inputObject);
 
 	return (
 		<section className='flex flex-col gap-10 w-full px-10 pb-10'>
 			<TransalatedInfoNav />
 			{info === TABS_LOCATIONS.details && (
 				<TranslatedInfoDetails
-					kind={`${entryInput.kind} - ${entryOutput.kind}`}
-					phonetics={[...entryInput.phonetics, ...entryOutput.phonetics]}
+					kinds={[entryInput.kind, entryOutput.kind]}
+					phonetics={entryInput.phonetics}
 					definition={entryInput.definition}
 					definitionTranslated={entryOutput.definition}
 					uses={entryInput.uses}
@@ -62,8 +61,10 @@ export default async function TranslatedInfoServer({ input, langInput, langOutpu
 				<TranslatedInfoExamples
 					examples={entryInput.examples}
 					examplesTranslated={entryOutput.examples}
+					langInput={langInput}
 					keyword={input}
 					keyWordTranslated={entryOutput.word}
+					langOutput={langOutput}
 				/>
 			)}
 		</section>

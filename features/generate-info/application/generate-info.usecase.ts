@@ -36,7 +36,7 @@ export class DefaultGenerateInfoUsecase implements GenerateInfoUsecase {
 		the output must has a data object in JSON following the pattern:
 			   data: {
 				kind: 'adjective' | 'noun' | 'verb' | etc.. // determine which one fits better with the input received, must be only one of this and this should be trasnlated to: ${langInput}
-				phonetics: [string] // Provide the phonetic symbols of the word, in case of english language, provide both britain and american phonetical symbols
+				phonetics: [string] // Provide the phonetic symbols of the word, in case of english language, provide both britain and american phonetical symbols with this pattern: UK [symbols] US [symbols]
 				lang: // string // ${langInput} // Keep this value as it is, must not be translated
 				word: // input to translate, fix it if there is some miss-spell or any error on the input.
 				synonyms: // string[] // synonyms of the input in ${langInput}, if it is a phrasal verb or an idiom, generate similar phrasal verbs or idioms with similar meaning.

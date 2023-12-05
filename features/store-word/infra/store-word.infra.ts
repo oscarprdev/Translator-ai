@@ -21,6 +21,7 @@ export class DefaultStoreWordInfra implements StoreWordInfra {
 					},
 				},
 			});
+
 			const dataAlreadyStored = dictionaryAlreadyStored?.entries.find((entry) => entry.word === data.word);
 
 			if (dataAlreadyStored) {

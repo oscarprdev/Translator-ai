@@ -13,6 +13,7 @@ interface HomePageProps {
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {
+	console.log(searchParams.info);
 	return (
 		<main className='flex flex-col items-center h-screen w-full max-w-[var(--max-width)] border-l border-r border-zinc-100'>
 			<TranslateCard

@@ -21,7 +21,7 @@ export default function TranslateCardInput({ languages }: TranslateCardInputProp
 
 	return (
 		<input
-			className='p-2 outline-none resize-none w-full overflow-hidden border-b capitalize border-zinc-200'
+			className='p-2 outline-none resize-none w-full overflow-hidden border-b border-zinc-200'
 			placeholder='Enter a word, phrasal verb or an idiom to be translated'
 			onChange={handleInput}
 		/>

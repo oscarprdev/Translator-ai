@@ -12,7 +12,7 @@ import { generateInfoUsecase } from '../../../features/generate-info';
 import { Action } from '../common/action';
 import { HandleWordTranslatedInput, ProvideInfoActionInput, ProvideInfoActionOutput } from './provide-info.types';
 
-class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoActionOutput> {
+export class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoActionOutput> {
 	constructor(
 		protected readonly findWordUsecase: FindWordUsecase,
 		private readonly generateInfoUsecase: GenerateInfoUsecase,
@@ -88,6 +88,7 @@ class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInfoAction
 			if (inputWordAlreadyStored) {
 				const wordToFind = inputWordAlreadyStored?.translations.find((translation) => translation.lang === langOutput)?.translation;
 
+				console.log(wordToFind);
 				return await this.handleWordTranslated({
 					wordToFind,
 					wordOriginal: word,
