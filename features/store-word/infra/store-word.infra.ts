@@ -11,7 +11,7 @@ export class DefaultStoreWordInfra implements StoreWordInfra {
 
 	async storeWord({ data }: StoreWordInfraTypes.Input): Promise<StoreWordInfraTypes.Output> {
 		try {
-			const dictionaryAlreadyStored = await this.db.dictionary.findUnique({
+			const dictionaryAlreadyStored = await this.db.dictionary.findFirst({
 				where: { language: data.lang },
 				include: {
 					entries: {

@@ -88,7 +88,6 @@ export class ProvideInfoAction extends Action<ProvideInfoActionInput, ProvideInf
 			if (inputWordAlreadyStored) {
 				const wordToFind = inputWordAlreadyStored?.translations.find((translation) => translation.lang === langOutput)?.translation;
 
-				console.log(wordToFind);
 				return await this.handleWordTranslated({
 					wordToFind,
 					wordOriginal: word,
