@@ -5,13 +5,14 @@ config();
 
 export class OpenAiClient {
 	readonly openai: OpenAI;
-	readonly openApiKey?: string = process.env.OPENAI_API_KEY;
+	readonly openApiKey?: string;
 	readonly model: string = 'gpt-4-1106-preview';
 	readonly role: string =
 		'You are an professional philologist with vast experience in english, spanish, german, italian, japanish, chinise languagaes.';
 
 	constructor() {
-		this.openai = new OpenAI({ apiKey: this.openApiKey });
+		this.openApiKey = process.env.OPENAI_API_KEY;
+		this.openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 	}
 
 	async executePrompt<T>(prompt: string) {
