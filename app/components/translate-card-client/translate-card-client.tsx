@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from 'react';
 import LanguageSelector from '../language-selector/language-selector';
 import { DefaultLanguages, LanguagesParams } from '../language-selector/language-selector.types';
 import TranslateCardInput from '../translate-card-input/translate-card-input';
+import RecordSound from '../record-sound/record-sound';
 
 export const DEFAULT_LANG_PARAMS: LanguagesParams = {
 	langInput: 'english',
@@ -35,13 +36,17 @@ export default function TranslateCardClient() {
 	};
 
 	return (
-		<div className='flex flex-col gap-10 w-full p-10'>
+		<div className='relative flex flex-col gap-10 w-full p-10'>
 			<LanguageSelector
 				languages={languages}
 				availableLanguages={availableLanguages}
 				handleSelect={handleSelect}
 			/>
 			<TranslateCardInput languages={languages} />
+			<RecordSound
+				langInput={languages.langInput}
+				langOutput={languages.langOutput}
+			/>
 		</div>
 	);
 }

@@ -3,7 +3,6 @@ import TranslateCardClient from '../translate-card-client/translate-card-client'
 import TranslateCardServer from '../translate-card-server/translate-card-server';
 import TranslateCardSkeleton from '../translate-card-skeleton/translate-card-skeleton';
 import WordCard from '../word-card/word-card';
-import RecordSound from '../record-sound/record-sound';
 
 interface TranslateCardProps {
 	input: string;
@@ -14,7 +13,6 @@ interface TranslateCardProps {
 const TranslateCardServerController = ({ input, langInput, langOutput }: TranslateCardProps) => {
 	return (
 		<section className='relative flex flex-col items-center gap-4 pt-12 p-2 w-full h-[28vh] bg-[var(--bg-translated-section)]'>
-			<RecordSound />
 			<WordCard content={input} />
 			{input && (
 				<Suspense

@@ -1,62 +1,24 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { MicrophoneIcon } from '../icons/microphone-icon';
-import { sendToOpenAI } from '@//actions/test/test-action';
+import useRecordSound from '@//hooks/use-record-sound';
 
-export default function RecordSound() {
-	const [recording, setRecording] = useState<boolean>(false);
+interface RecordSoundProps {
+	langInput: string;
+	langOutput: string;
+}
 
-	const mediaRecorder = useRef<MediaRecorder | null>(null);
-	const chunks = useRef<Blob[]>([]);
+export default function RecordSound({ langInput, langOutput }: RecordSoundProps) {
+	const { recording, setRecording } = useRecordSound(langInput, langOutput);
 
 	const handleRecordButtonClick = () => {
 		setRecording(!recording);
 	};
 
-	useEffect(() => {
-		const handleDataAvailable = (e: any) => {
-			if (e.data.size > 0) {
-				chunks.current.push(e.data);
-			}
-		};
-
-		const handleStop = async () => {
-			const blob = new Blob(chunks.current, { type: 'audio/mp3' });
-			const buffer = await blob.arrayBuffer();
-			const uint8Array = new Uint8Array(buffer);
-
-			await sendToOpenAI(uint8Array);
-		};
-
-		if (recording) {
-			navigator.mediaDevices
-				.getUserMedia({ audio: true })
-				.then((stream) => {
-					mediaRecorder.current = new MediaRecorder(stream);
-					mediaRecorder.current.ondataavailable = handleDataAvailable;
-					mediaRecorder.current.onstop = handleStop;
-
-					mediaRecorder.current.start();
-				})
-				.catch((err) => console.error('Error accessing microphone:', err));
-		} else {
-			if (mediaRecorder.current) {
-				mediaRecorder.current.stop();
-			}
-		}
-
-		return () => {
-			if (mediaRecorder.current && mediaRecorder.current.state === 'recording') {
-				mediaRecorder.current.stop();
-			}
-		};
-	}, [recording]);
-
 	return (
 		<button
 			onClick={handleRecordButtonClick}
-			className={`z-10 absolute top-[-2.5rem] group grid place-items-center`}>
+			className={`z-10 left-[42.5%] absolute bottom-[-3.5rem] group grid place-items-center`}>
 			<MicrophoneIcon
 				className={`${
 					recording && 'text-[var(--contrast-color)]'

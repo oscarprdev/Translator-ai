@@ -5,7 +5,7 @@ config();
 
 export class OpenAiClient {
 	readonly openai: OpenAI;
-	readonly openApiKey?: string = process.env.OPEN_API_KEY;
+	readonly openApiKey?: string = process.env.OPENAI_API_KEY;
 	readonly model: string = 'gpt-4-1106-preview';
 	readonly role: string =
 		'You are an professional philologist with vast experience in english, spanish, german, italian, japanish, chinise languagaes.';
@@ -14,7 +14,7 @@ export class OpenAiClient {
 		this.openai = new OpenAI({ apiKey: this.openApiKey });
 	}
 
-	async execute<T>(prompt: string) {
+	async executePrompt<T>(prompt: string) {
 		try {
 			const completion = await this.openai.chat.completions.create({
 				messages: [
@@ -41,6 +41,26 @@ export class OpenAiClient {
 			}
 
 			throw new Error('OpenAi request has failed');
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	}
+
+	async executeAudio(audioTranscriptionBody: FormData) {
+		try {
+			const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+				headers: {
+					Authorization: `Bearer ${this.openApiKey}`,
+				},
+				method: 'POST',
+				body: audioTranscriptionBody,
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			return await response.json();
 		} catch (error: any) {
 			throw new Error(error);
 		}
