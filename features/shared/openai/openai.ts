@@ -11,8 +11,8 @@ export class OpenAiClient {
 		'You are an professional philologist with vast experience in english, spanish, german, italian, japanish, chinise languagaes.';
 
 	constructor() {
-		this.openApiKey = process.env.OPENAI_API_KEY;
-		this.openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+		this.openApiKey = process.env.OPENAI_API_KEY || '';
+		this.openai = new OpenAI({ apiKey: this.openApiKey });
 	}
 
 	async executePrompt<T>(prompt: string) {
