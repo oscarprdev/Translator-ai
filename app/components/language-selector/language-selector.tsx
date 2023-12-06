@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
 import SelectLanguage from '../select-language/select-language';
 import { TransferIcon } from '../icons/transfer-icon';
-import { DefaultLanguagesAvailables, LangParams, LanguagesParams } from './language-selector.types';
+import { LangParams, LanguagesParams, DefaultLanguages } from './language-selector.types';
 
 interface LanguageSelectorProps {
 	languages: LanguagesParams;
-	availableLanguages: DefaultLanguagesAvailables;
+	availableLanguages: DefaultLanguages;
 	handleSelect(e: ChangeEvent<HTMLSelectElement>): void;
 }
 
