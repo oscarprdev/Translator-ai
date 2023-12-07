@@ -3,8 +3,6 @@
 import { translateInfoAction } from '../../actions/translate-input/translate-input.action';
 import WordCard from '../word-card/word-card';
 
-export const runtime = 'edge';
-
 interface TranslateCardServerProps {
 	input: string;
 	langInput: string;
