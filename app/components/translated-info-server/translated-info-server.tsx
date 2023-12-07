@@ -6,6 +6,8 @@ import TranslatedInfoSynAnt from '../translated-info-synant/translated-info-syna
 import TranslatedInfoExamples from '../translated-info-examples/translated-info-examples';
 import { provideInfoAction } from '@//actions/provide-info/provide-info.action';
 
+export const runtime = 'edge';
+
 const TABS_LOCATIONS = {
 	details: 'det',
 	synonyms: 'syn',
