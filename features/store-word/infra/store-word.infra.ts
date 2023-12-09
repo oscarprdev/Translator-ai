@@ -23,6 +23,13 @@ export class DefaultStoreWordInfra implements StoreWordInfra {
 			});
 
 			const dataAlreadyStored = dictionaryAlreadyStored?.entries.find((entry) => entry.word === data.word);
+			const alreadyTranslated = dataAlreadyStored?.translations.find((trans) => trans.translation === data.word);
+
+			if (dataAlreadyStored && alreadyTranslated) {
+				return {
+					data: dataAlreadyStored,
+				};
+			}
 
 			if (dataAlreadyStored) {
 				const dataTranslationUpdated = await this.db.translatedEntry.update({

@@ -11,6 +11,7 @@ export class DefaultStoreWordUsecase implements StoreWordUsecase {
 
 	async storeWord({ data }: StoreWordTypes.StoreWordInput): Promise<StoreWordTypes.StoreWordOutput> {
 		try {
+			console.log(data);
 			const response = await this.ports.storeWord({ data });
 
 			return {

@@ -18,6 +18,8 @@ class TranslateInputAction extends Action<TranslateInputActionInput, TranslateIn
 			const wordAlreadyStored = await this.handleFindWordStored(word, langInput);
 			const wordTranslated = wordAlreadyStored?.translations.find((translation) => translation.lang === langOutput);
 
+			console.log(wordAlreadyStored, wordTranslated);
+
 			if (wordTranslated && wordAlreadyStored) {
 				return {
 					from: wordAlreadyStored?.word,
@@ -27,11 +29,13 @@ class TranslateInputAction extends Action<TranslateInputActionInput, TranslateIn
 
 			const translatedWord = await this.handleTranslateWord(word, langInput, langOutput);
 
+			console.log(translatedWord);
 			return {
 				from: word,
 				to: translatedWord,
 			};
 		} catch (error: any) {
+			console.log(error);
 			redirect(`?error=${error.message}`);
 		}
 	}

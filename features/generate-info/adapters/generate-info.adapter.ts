@@ -13,19 +13,6 @@ export class GenerateInfoAdapter implements GenerateInfoPorts {
 	async generateInfo({ prompt }: GenerateInfoPorts.Input): Promise<GenerateInfoPorts.Output> {
 		const validInput = this.validateInput(prompt);
 
-		const response = await this.infra.generateInfo(validInput);
-
-		return {
-			word: response.word,
-			kind: response.kind,
-			phonetics: response.phonetics,
-			lang: response.lang,
-			examples: response.examples,
-			definition: response.definition,
-			synonyms: response.synonyms,
-			antonyms: response.antonyms,
-			uses: response.uses,
-			translations: response.translations,
-		};
+		return await this.infra.generateInfo(validInput);
 	}
 }
