@@ -4,6 +4,7 @@ export interface RecordSoundPorts {
 
 export namespace RecordSoundPortsTypes {
 	export interface RecordSoundInput {
+		lang: string;
 		uint8Array: Uint8Array;
 	}
 

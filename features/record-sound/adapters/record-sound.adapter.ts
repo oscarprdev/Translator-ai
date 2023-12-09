@@ -7,11 +7,13 @@ export class RecordSoundAdapter implements RecordSoundPorts {
 	constructor(private readonly infra: RecordSoundInfra, private readonly zod: ZodValidation) {}
 
 	validateOutput(input: string) {
-		return this.zod.validate<string>(recordSoundOutputSchema, input);
+		const validText = this.zod.validate<string>(recordSoundOutputSchema, input);
+
+		return validText.replace('.', '');
 	}
 
-	async recordSound({ uint8Array }: RecordSoundPortsTypes.RecordSoundInput): Promise<RecordSoundPortsTypes.RecordSoundOutput> {
-		const { text } = await this.infra.recordSoundInfra({ uint8Array });
+	async recordSound({ lang, uint8Array }: RecordSoundPortsTypes.RecordSoundInput): Promise<RecordSoundPortsTypes.RecordSoundOutput> {
+		const { text } = await this.infra.recordSoundInfra({ lang, uint8Array });
 
 		return {
 			text: this.validateOutput(text),

@@ -48,7 +48,7 @@ const useRecordSound = (langInput: string, langOutput: string) => {
 		const uint8Array = new Uint8Array(buffer);
 
 		// Use record sound action to generate text from sound
-		const textRecorded = await recordSound(uint8Array);
+		const textRecorded = await recordSound(langInput, uint8Array);
 
 		cleanup();
 		replace(`${pathname}?input=${textRecorded}&langInput=${langInput}&langOutput=${langOutput}&info=det`);
