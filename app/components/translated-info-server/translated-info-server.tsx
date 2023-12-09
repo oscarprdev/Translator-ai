@@ -1,6 +1,6 @@
 'use server';
 
-import TransalatedInfoNav from '../translated-info-nav/translated-info-nav';
+import TranslatedInfoNav from '../translated-info-nav/translated-info-nav';
 import TranslatedInfoDetails from '../translated-info-details/translated-info-details';
 import TranslatedInfoSynAnt from '../translated-info-synant/translated-info-synant';
 import TranslatedInfoExamples from '../translated-info-examples/translated-info-examples';
@@ -26,7 +26,7 @@ export default async function TranslatedInfoServer({ input, langInput, langOutpu
 
 	return (
 		<section className='flex flex-col gap-10 w-full px-10 pb-10'>
-			<TransalatedInfoNav />
+			<TranslatedInfoNav />
 			{info === TABS_LOCATIONS.details && (
 				<TranslatedInfoDetails
 					kinds={[entryInput.kind, entryOutput.kind]}

@@ -10,7 +10,7 @@ const TABS_LOCATIONS = {
 	examples: 'ex',
 };
 
-export default function TransalatedInfoNav() {
+export default function TranslatedInfoNav() {
 	const pathname = usePathname();
 	const params = useSearchParams();
 

@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { FindWordInfraTypes } from './models';
+import { cache } from 'react';
 
 export interface FindWordInfra {
 	findWordFromDictionary(input: FindWordInfraTypes.Input): Promise<FindWordInfraTypes.Output>;
